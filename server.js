@@ -6,6 +6,7 @@ const socketIO = require('socket.io');
 const http = require('http');
 const getPort = require('get-port');
 const _ = require('lodash');
+const clientRouter = require('./web-client/router');
 const Promise = require('bluebird');
 const logger = require('winston');
 
@@ -13,9 +14,10 @@ const app = express();
 const httpServer = http.createServer(app);
 const io = socketIO(httpServer);
 
-app.use('/', express.static('./web-client'));
 
-Promise.all([3001, getPort()]).then(ports => {
+app.use('/', clientRouter);
+
+Promise.all([3002, getPort()]).then(ports => {
   const httpPort = ports[0];
   const bonjourPort = ports[1];
   logger.debug('Got available ports:', httpPort, bonjourPort);
@@ -37,21 +39,34 @@ Promise.all([3001, getPort()]).then(ports => {
 
   const browser = bonjour.find({ type: 'http' });
 
+  // const getOnlineChatServices = () => (
+  //   _.filter(browser.services,
+  //     service => service.name !== myService.name &&
+  //       _.includes(service.subtypes, 'LocalChat'))
+  // );
+
   const getOnlineChatServices = () => (
-    _.filter(browser.services,
-      service => service.name !== myService.name &&
-        _.includes(service.subtypes, 'LocalChat'))
+    [{ name: 'other' }]
   );
 
   browser.on('up', () => {
     const chatServices = getOnlineChatServices();
     logger.info('Online LocalChat services:', _.map(chatServices, s => s.name).join() || 'none');
-    io.emit('action', { type: 'SERVICES_UPDATED', payload: chatServices });
+    io.emit('action', { type: 'CLIENTS_UPDATED', payload: chatServices });
   });
 
   io.on('connection', socket => {
     logger.info('New client connected');
-    socket.emit('action', { type: 'SERVICES_UPDATED', payload: getOnlineChatServices() });
+    socket.emit('action', { type: 'CLIENTS_UPDATED', payload: getOnlineChatServices() });
+    socket.on('action', (action) => {
+      switch (action.type) {
+        case 'OUTGOING_MESSAGE':
+          io.to(action.payload.to).emit('INCOMING_MESSAGE', action.payload);
+          break;
+        default:
+          return;
+      }
+    });
   });
 
   httpServer.listen(httpPort, () => {

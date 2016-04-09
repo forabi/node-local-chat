@@ -9,12 +9,11 @@ const config = {
   devtool: 'source-map',
 
   entry: {
-    app: ['./src/client.js'],
-    vendor: ['react', 'react-intl'],
+    bundle: [path.resolve(__dirname, 'src/index.js')],
   },
 
   output: {
-    path: path.resolve(__dirname, 'src/public'),
+    path: path.resolve(__dirname, 'public'),
     filename: '[name].js',
   },
 
@@ -37,22 +36,17 @@ const config = {
       isBrowser: true,
     }),
     new webpack.optimize.OccurrenceOrderPlugin(true),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor', filename: 'vendor.js',
-    }),
     new webpack.LoaderOptionsPlugin({
       minimize: true,
       debug: false,
     }),
   ],
-
-  resolve: { },
 };
 
 if (env.isDevelopment) {
   config.devtool = 'eval';
   if (env.isHot) {
-    config.entry.app.unshift('webpack-hot-middleware/client');
+    config.entry.bundle.unshift('webpack-hot-middleware/client');
     config.output.publicPath = 'http://localhost:8080/';
     config.plugins.unshift(new webpack.HotModuleReplacementPlugin());
   }
