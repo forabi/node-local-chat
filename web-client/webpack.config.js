@@ -45,7 +45,11 @@ const config = {
 
 if (env.isDevelopment) {
   config.devtool = 'eval';
+  config.devServer = {
+    inline: true,
+  };
   if (env.isHot) {
+    config.devServer.hot = true;
     config.entry.bundle.unshift('webpack-hot-middleware/client');
     config.output.publicPath = 'http://localhost:8080/';
     config.plugins.unshift(new webpack.HotModuleReplacementPlugin());

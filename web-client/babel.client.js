@@ -3,6 +3,7 @@ const config = {
   presets: ['es2015-native-modules', 'stage-3', 'react'],
   plugins: [
     'transform-object-rest-spread',
+    'transform-class-properties',
   ],
   sourceMaps: 'both',
 };

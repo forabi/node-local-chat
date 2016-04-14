@@ -1,23 +1,32 @@
-import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { createStore, combineReducers, compose, applyMiddleware } from 'redux';
 import clients from './clients';
-import conversations from './conversations';
+import messages from './messages';
 import activeConversationId from './activeConversationId';
 import drafts from './drafts';
 import socket from './socket';
+import clientId from './clientId';
+import displayName from './displayName';
 import socketMiddleware from './socketMiddleware';
 
 const reducers = combineReducers({
+  displayName,
+  clientId,
   clients,
-  conversations,
   activeConversationId,
+  messages,
   drafts,
 });
 
-const store = createStore(reducers, applyMiddleware(socketMiddleware));
+const store = createStore(reducers,
+  compose(
+    applyMiddleware(
+      socketMiddleware
+    ),
+    (process.env.NODE_ENV !== 'production' && window.devToolsExtension) ?
+      window.devToolsExtension() : f => f
+  )
+);
 
-store.subscribe(() => console.log('Store updated', store.getState()));
-
-socket.on('action', action => console.log(action));
 socket.on('action', action => store.dispatch(action));
 
 export default store;

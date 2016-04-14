@@ -7,8 +7,10 @@ const http = require('http');
 const getPort = require('get-port');
 const _ = require('lodash');
 const clientRouter = require('./web-client/router');
+const useragent = require('ua-parser-js');
 const Promise = require('bluebird');
 const logger = require('winston');
+const memoize = require('lodash/memoize');
 
 const app = express();
 const httpServer = http.createServer(app);
@@ -34,34 +36,61 @@ Promise.all([3002, getPort()]).then(ports => {
     options.name = 'LocalChat (unknown username)';
   }
 
-  const myService = bonjour.publish(options);
+  bonjour.publish(options);
   logger.info(`Bonjour service published on port ${bonjourPort}`);
 
-  const browser = bonjour.find({ type: 'http' });
-
-  // const getOnlineChatServices = () => (
-  //   _.filter(browser.services,
-  //     service => service.name !== myService.name &&
-  //       _.includes(service.subtypes, 'LocalChat'))
-  // );
-
-  const getOnlineChatServices = () => (
-    [{ name: 'other' }]
-  );
-
-  browser.on('up', () => {
-    const chatServices = getOnlineChatServices();
-    logger.info('Online LocalChat services:', _.map(chatServices, s => s.name).join() || 'none');
-    io.emit('action', { type: 'CLIENTS_UPDATED', payload: chatServices });
+  const getFallbackDisplayName = memoize(id => {
+    const header = io.sockets.connected[id].request.headers['user-agent'];
+    const ua = useragent(header);
+    const browser = ua.browser.name;
+    const os = ua.os.name;
+    return `${browser} on ${os}`;
   });
+
+  const socketNames = { };
 
   io.on('connection', socket => {
     logger.info('New client connected');
-    socket.emit('action', { type: 'CLIENTS_UPDATED', payload: getOnlineChatServices() });
-    socket.on('action', (action) => {
+
+    const getClients = () => (
+      Object.keys(io.sockets.connected)
+      // .filter(id => id !== socket.id)
+      .map(id => ({
+        id,
+        displayName: socketNames[id] || getFallbackDisplayName(id),
+      }))
+    );
+
+    const updateClients = () => io.emit('action', {
+      type: 'CLIENTS_UPDATED',
+      payload: getClients(),
+    });
+
+    socket.emit('action', {
+      type: 'SET_CLIENT_ID',
+      payload: socket.id,
+    });
+
+    updateClients();
+
+    socket.on('disconnect', updateClients);
+
+    socket.on('action', action => {
+      logger.debug('Server received action', action);
       switch (action.type) {
+        case 'SET_DISPLAY_NAME':
+          socketNames[socket.id] = action.payload;
+          io.emit('CLIENTS_UPDATED', getClients());
+          break;
         case 'OUTGOING_MESSAGE':
-          io.to(action.payload.to).emit('INCOMING_MESSAGE', action.payload);
+          socket.broadcast.to(action.payload.to)
+            .emit('action', {
+              type: 'INCOMING_MESSAGE',
+              payload: {
+                from: socket.id,
+                text: action.payload.text,
+              },
+            });
           break;
         default:
           return;

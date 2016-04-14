@@ -1,17 +1,21 @@
-const initalState = { };
+import { createSelector } from 'reselect';
+import keyBy from 'lodash/keyBy';
+import map from 'lodash/map';
+import filter from 'lodash/filter';
+import mapValues from 'lodash/mapValues';
 
-const reducer = (previousState = initalState, { type, payload }) => {
-  switch (type) {
-    case 'INCOMING_MESSAGE':
-    case 'OUTGOING_MESSAGE':
-      const convId = type === 'OUTGOING_MESSAGE' ? payload.to : payload.from;
-      return {
-        ...previousState,
-        [convId]: [...(previousState[convId] || []), payload],
-      };
-    default:
-      return previousState;
+const getPreviousConversations = state => state.conversations;
+const getClients = state => state.clients;
+const getClientId = state => state.clientId;
+const getMessages = state => state.messages;
+
+
+export const getConversations = createSelector(
+  [getPreviousConversations, getClients, getClientId, getMessages],
+  (conversations, clients, clientId, messages) => {
+    return mapValues({
+      ...map(conversations, c => ({ ...c, online: false })),
+      ...keyBy(map(filter(clients, ({ id }) => id !== clientId), c => ({ ...c, online: true })), 'id'),
+    }, c => ({ ...c, unreadCount: filter(messages, m => m.from === c.id && !m.read).length }));
   }
-};
-
-export default reducer;
+);

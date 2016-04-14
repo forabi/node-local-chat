@@ -1,14 +1,15 @@
 import React from 'react';
+import PureComponent from 'react-pure-render/component';
 import { connect } from 'react-redux';
 import { sendMessageTo, setDraftTo } from '../actions';
 
 
-export class ChatView extends React.Component {
+export class ChatView extends PureComponent {
   render() {
     const { conversationId, info, messages, draft, dispatch } = this.props;
     return (<div>
       <header>
-        {info.name}
+        {info.displayName}
       </header>
       { messages && <ol>{ messages.map((message, i) => <li key={i}>{message.text}</li>) }</ol> }
       <input

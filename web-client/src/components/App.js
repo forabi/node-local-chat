@@ -1,38 +1,39 @@
 import React from 'react';
-import ClientList from './ClientList';
+import PureComponent from 'react-pure-render/component';
+import ConversationList from './ConversationList';
 import ChatView from './ChatView';
 import { connect } from 'react-redux';
-import find from 'lodash/find';
+import { getConversations } from '../conversations';
+import { getActiveConversationMessages } from '../messages';
+import toArray from 'lodash/toArray';
 
-class App extends React.Component {
+class App extends PureComponent {
   render() {
     const {
-      clients,
+      conversations,
       activeConversationId,
       activeConversationMessages,
       activeConversationDraft,
     } = this.props;
-    
-    console.log(clients, activeConversationId, find(clients, c => c.name === activeConversationId));
 
     return (<span>
-      <ClientList
-        activeClientId={activeConversationId}
-        clients={clients}
+      <ConversationList
+        activeConversationId={activeConversationId}
+        conversations={toArray(conversations)}
       />
-      {activeConversationId && <ChatView
+      {Boolean(activeConversationId !== null) && <ChatView
         conversationId={activeConversationId}
         messages={activeConversationMessages}
-        info={find(clients, c => c.name === activeConversationId)}
+        info={conversations[activeConversationId]}
         draft={activeConversationDraft}
       />}
     </span>);
   }
 }
 
-export default connect(({ activeConversationId, conversations, clients, drafts }) => ({
-  clients,
-  activeConversationId,
-  activeConversationMessages: conversations[activeConversationId],
-  activeConversationDraft: drafts[activeConversationId] || '',
+export default connect(state => ({
+  conversations: getConversations(state),
+  activeConversationId: state.activeConversationId,
+  activeConversationMessages: getActiveConversationMessages(state),
+  activeConversationDraft: state.drafts[state.activeConversationId] || '',
 }))(App);
