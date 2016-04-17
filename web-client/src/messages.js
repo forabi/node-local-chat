@@ -1,3 +1,5 @@
+import map from 'lodash/map';
+
 const initalState = [];
 
 const reducer = (previousState = initalState, { type, payload }) => {
@@ -8,6 +10,13 @@ const reducer = (previousState = initalState, { type, payload }) => {
         ...previousState,
         payload,
       ];
+    case 'SET_ACTIVE_CONVERSATION':
+      return map(previousState, message => {
+        if (message.from === payload) {
+          return { ...message, read: true };
+        }
+        return message;
+      });
     default:
       return previousState;
   }

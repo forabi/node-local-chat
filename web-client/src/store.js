@@ -2,7 +2,6 @@ import { createStore, combineReducers, compose, applyMiddleware } from 'redux';
 import clients from './clients';
 import messages from './messages';
 import activeConversationId from './activeConversationId';
-import drafts from './drafts';
 import socket from './socket';
 import clientId from './clientId';
 import displayName from './displayName';
@@ -14,7 +13,6 @@ const reducers = combineReducers({
   clients,
   activeConversationId,
   messages,
-  drafts,
 });
 
 const store = createStore(reducers,

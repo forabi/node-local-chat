@@ -1,0 +1,20 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "Launch index.html",
+			"type": "chrome",
+			"request": "launch",
+      "preLaunchTask": "dev",
+			"file": "${workspaceRoot}/src/index.html",
+      "sourceMaps": true,
+      "webRoot": "src/public"
+		},
+		{
+			"name": "Attach",
+			"type": "chrome",
+			"request": "attach",
+			"port": 9222
+		}
+	]
+}

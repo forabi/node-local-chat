@@ -13,11 +13,6 @@ export const markMessageAsSeen = messageId => ({
   payload: messageId,
 });
 
-export const setDraftTo = (to, message) => ({
-  type: 'SET_DRAFT',
-  payload: { conversationId: to, text: message },
-});
-
 export const setDisplayName = (name) => ({
   type: 'SET_DISPLAY_NAME',
   payload: name,

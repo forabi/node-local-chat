@@ -1,0 +1,60 @@
+{
+  "version": "v4",
+  "repo": "borisyankov/DefinitelyTyped",
+  "ref": "master",
+  "path": "typings",
+  "bundle": "typings/tsd.d.ts",
+  "installed": {
+    "express/express.d.ts": {
+      "commit": "94d8775a947f626269b06ccadd6f5e61839389d0"
+    },
+    "serve-static/serve-static.d.ts": {
+      "commit": "94d8775a947f626269b06ccadd6f5e61839389d0"
+    },
+    "bluebird/bluebird.d.ts": {
+      "commit": "94d8775a947f626269b06ccadd6f5e61839389d0"
+    },
+    "express-serve-static-core/express-serve-static-core.d.ts": {
+      "commit": "94d8775a947f626269b06ccadd6f5e61839389d0"
+    },
+    "mime/mime.d.ts": {
+      "commit": "94d8775a947f626269b06ccadd6f5e61839389d0"
+    },
+    "lodash/lodash.d.ts": {
+      "commit": "94d8775a947f626269b06ccadd6f5e61839389d0"
+    },
+    "node/node.d.ts": {
+      "commit": "94d8775a947f626269b06ccadd6f5e61839389d0"
+    },
+    "material-ui/material-ui.d.ts": {
+      "commit": "94d8775a947f626269b06ccadd6f5e61839389d0"
+    },
+    "react-redux/react-redux.d.ts": {
+      "commit": "94d8775a947f626269b06ccadd6f5e61839389d0"
+    },
+    "redux/redux.d.ts": {
+      "commit": "94d8775a947f626269b06ccadd6f5e61839389d0"
+    },
+    "react/react.d.ts": {
+      "commit": "94d8775a947f626269b06ccadd6f5e61839389d0"
+    },
+    "socket.io/socket.io.d.ts": {
+      "commit": "94d8775a947f626269b06ccadd6f5e61839389d0"
+    },
+    "winston/winston.d.ts": {
+      "commit": "94d8775a947f626269b06ccadd6f5e61839389d0"
+    },
+    "reselect/reselect.d.ts": {
+      "commit": "94d8775a947f626269b06ccadd6f5e61839389d0"
+    },
+    "react/react-dom.d.ts": {
+      "commit": "94d8775a947f626269b06ccadd6f5e61839389d0"
+    },
+    "moment/moment.d.ts": {
+      "commit": "94d8775a947f626269b06ccadd6f5e61839389d0"
+    },
+    "moment/moment-node.d.ts": {
+      "commit": "94d8775a947f626269b06ccadd6f5e61839389d0"
+    }
+  }
+}

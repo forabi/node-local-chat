@@ -89,6 +89,7 @@ Promise.all([3002, getPort()]).then(ports => {
               payload: {
                 from: socket.id,
                 text: action.payload.text,
+                date: new Date,
               },
             });
           break;

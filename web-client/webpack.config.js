@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const babelConfig = require('./babel.client');
 const env = require('../env');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const config = {
   debug: true,
@@ -23,6 +24,12 @@ const config = {
       exclude: /node_modules/,
       loader: 'babel',
       query: Object.assign(babelConfig, { cacheDirectory: './tmp' }),
+    }, {
+      test: /\.css$/,
+      loader: ExtractTextPlugin.extract(
+        'style',
+        'css?module&localIdentName=[name]_[local]_[hash:base64:5]'
+      ),
     }],
   },
 
@@ -36,6 +43,7 @@ const config = {
       isBrowser: true,
     }),
     new webpack.optimize.OccurrenceOrderPlugin(true),
+    new ExtractTextPlugin('styles.css'),
     new webpack.LoaderOptionsPlugin({
       minimize: true,
       debug: false,
