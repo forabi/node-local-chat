@@ -1,4 +1,4 @@
-export const setActiveConversation = (payload) => ({
+export const setActiveConversation = payload => ({
   type: 'SET_ACTIVE_CONVERSATION',
   payload,
 });
@@ -13,7 +13,7 @@ export const markMessageAsSeen = messageId => ({
   payload: messageId,
 });
 
-export const setDisplayName = (name) => ({
+export const setDisplayName = name => ({
   type: 'SET_DISPLAY_NAME',
   payload: name,
 });
