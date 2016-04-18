@@ -1,17 +1,22 @@
 import React, { PropTypes } from 'react';
+import RelativeDate from '../RelativeDate';
 import style from './style.css';
-import moment from 'moment';
 
-const Message = ({ text, date }) => (
-  <div className={style.bubble}>
+const Message = ({ text, date, direction, style: inlineStyle }) => (
+  <div
+    style={inlineStyle}
+    className={direction === 'right' ? style.bubble__right : style.bubble__left }
+  >
     {text}
-    <small className={style.date}>{moment(date).fromNow(true)}</small>
+    <small className={style.date}><RelativeDate>{date}</RelativeDate></small>
   </div>
 );
 
 Message.propTypes = {
   text: PropTypes.string.isRequired,
   date: PropTypes.instanceOf(Date).isRequired,
+  direction: PropTypes.oneOf(['right', 'left']).isRequired,
+  style: PropTypes.object,
 };
 
 export default Message;

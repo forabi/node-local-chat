@@ -5,7 +5,7 @@ export const setActiveConversation = (payload) => ({
 
 export const sendMessageTo = (to, message) => ({
   type: 'OUTGOING_MESSAGE',
-  payload: { to, text: message },
+  payload: { to, text: message, date: new Date },
 });
 
 export const markMessageAsSeen = messageId => ({

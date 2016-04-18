@@ -18,6 +18,20 @@
   overflow-y: scroll;
 }
 
+.messageContainer {
+  display: block;
+  width: 100%;
+  padding: 12px 0;
+}
+
+.messageContainerLeft {
+  composes: messageContainer;
+}
+
+.messageContainerRight {
+  composes: messageContainer;
+}
+
 .composeForm {
   grid-area: compose-form;
   display: flex;

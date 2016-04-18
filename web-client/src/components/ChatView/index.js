@@ -32,7 +32,17 @@ export class ChatView extends PureComponent {
             </ToolbarGroup>
         </Toolbar>
         <div className={style.messagesList}>
-          { messages && <ol>{ messages.map((message, i) => <Message key={i} {...message}/> ) }</ol> }
+          {messages.map((message, i) => {
+            const direction = message.from === conversationId ? 'left' : 'right';
+            return <div className={direction === 'left' ? style.messageContainerLeft : style.messageContainerRight}>
+              <Message
+                key={i}
+                direction={direction}
+                {...message}
+                style={{ float: direction, clear: 'both' }}
+              />
+            </div>}
+          )}
         </div>
         <form className={style.composeForm}
           onSubmit={e => {
