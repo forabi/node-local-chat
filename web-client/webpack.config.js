@@ -30,6 +30,9 @@ const config = {
         'style',
         'css?module&localIdentName=[name]_[local]_[hash:base64:5]'
       ),
+    }, {
+      test: /\.svg$/,
+      loaders: ['babel', 'react-svg'],
     }],
   },
 

@@ -56,6 +56,7 @@
     "eslint-config-airbnb": "^6.2.0",
     "eslint-plugin-react": "^4.3.0",
     "extract-text-webpack-plugin": "^1.0.1",
+    "react-svg-loader": "^1.0.1",
     "react-transform-catch-errors": "^1.0.2",
     "react-transform-hmr": "^1.0.4",
     "react-transform-render-visualizer": "^0.4.0",
