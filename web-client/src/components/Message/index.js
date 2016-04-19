@@ -14,7 +14,7 @@ const Message = ({ text, date, direction, style: inlineStyle }) => (
 
 Message.propTypes = {
   text: PropTypes.string.isRequired,
-  date: PropTypes.instanceOf(Date).isRequired,
+  date: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]).isRequired,
   direction: PropTypes.oneOf(['right', 'left']).isRequired,
   style: PropTypes.object,
 };

@@ -36,18 +36,25 @@ export class ChatView extends PureComponent {
                   <OnlineIcon isOnline={info.online} />
                 </ToolbarGroup>
             </Toolbar>
-            <div className={style.messagesList}>
-              {messages.map((message, i) => {
+            <div className={style.messagesList}>{
+              messages.map((message, i) => {
                 const direction = message.from === conversationId ? 'left' : 'right';
-                return <div className={direction === 'left' ? style.messageContainerLeft : style.messageContainerRight}>
-                  <Message
+                return (
+                  <div
                     key={i}
-                    direction={direction}
-                    {...message}
-                    style={{ float: direction, clear: 'both' }}
-                  />
-                </div>}
-              )}
+                    className={
+                      direction === 'left' ?
+                      style.messageContainerLeft : style.messageContainerRight
+                    }
+                  >
+                    <Message
+                      direction={direction}
+                      {...message}
+                      style={{ float: direction, clear: 'both' }}
+                    />
+                </div>);
+              })
+            }
             </div>
             <form className={style.composeForm}
               onSubmit={e => {

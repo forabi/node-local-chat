@@ -4,7 +4,7 @@ import moment from 'moment';
 
 class RelativeDate extends PureComponent {
   static propTypes = {
-    children: PropTypes.instanceOf(Date),
+    children: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]).isRequired,
     style: PropTypes.object,
   };
   
