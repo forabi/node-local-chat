@@ -21,7 +21,6 @@ export const getConversations = createSelector(
         unreadCount: filter(messages, m => m.from === c.id && !m.read).length
       })
     );
-    console.log(conversations);
     return conversations;
   }
 );

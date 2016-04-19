@@ -56,26 +56,28 @@ export class ChatView extends PureComponent {
               })
             }
             </div>
-            <form className={style.composeForm}
-              onSubmit={e => {
-                e.preventDefault();
-                dispatch(sendMessageTo(conversationId, this.state.message));
-                this.setState({ message: '' });
-              }}
-            >
-              <TextField
-                className={style.inputField}
-                onChange={ e => this.setState({ message: e.target.value }) }
-                value={this.state.message}
-                hintText="Type a message"
-              />
-              <FloatingActionButton mini
-                type="submit"
-                disabled={!info.online || !this.state.message}
+            {!info.online ? <span>{info.displayName} went offline</span> :
+              <form className={style.composeForm}
+                onSubmit={e => {
+                  e.preventDefault();
+                  dispatch(sendMessageTo(conversationId, this.state.message));
+                  this.setState({ message: '' });
+                }}
               >
-                <SendIcon />
-              </FloatingActionButton>
-            </form>
+                <TextField
+                  className={style.inputField}
+                  onChange={ e => this.setState({ message: e.target.value }) }
+                  value={this.state.message}
+                  hintText="Type a message"
+                />
+                <FloatingActionButton mini
+                  type="submit"
+                  disabled={!info.online || !this.state.message}
+                >
+                  <SendIcon />
+                </FloatingActionButton>
+              </form>
+            }
           </div>}
         </div>
     </div>);

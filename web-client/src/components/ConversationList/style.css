@@ -11,5 +11,5 @@
 }
 
 .activeListItem {
-  background: lightblue;
+  background: lightblue !important;
 }

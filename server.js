@@ -52,28 +52,39 @@ Promise.all([3002, getPort()]).then(ports => {
   io.on('connection', socket => {
     logger.info('New client connected');
 
+    socket.info = {
+      id: socket.id,
+      displayName: socketNames[socket.id] || getFallbackDisplayName(socket.id),
+    };
+
     const getClients = () => (
       Object.keys(io.sockets.connected)
-      // .filter(id => id !== socket.id)
-      .map(id => ({
-        id,
-        displayName: socketNames[id] || getFallbackDisplayName(id),
-      }))
+      .map(s => s.info)
     );
 
-    const updateClients = () => io.emit('action', {
-      type: 'CLIENTS_UPDATED',
-      payload: getClients(),
+    io.emit('action', {
+      type: 'NEW_CLIENT',
+      payload: socket.info,
+    });
+
+    socket.on('reconnect', () => {
+      io.emit('action', {
+        type: 'CLIENT_ONLINE',
+        payload: socket.id,
+      });
+    });
+
+    socket.on('disconnect', () => {
+      io.emit('action', {
+        type: 'CLIENT_OFFLINE',
+        payload: socket.id,
+      });
     });
 
     socket.emit('action', {
       type: 'SET_CLIENT_ID',
       payload: socket.id,
     });
-
-    updateClients();
-
-    socket.on('disconnect', updateClients);
 
     socket.on('action', action => {
       logger.debug('Server received action', action);

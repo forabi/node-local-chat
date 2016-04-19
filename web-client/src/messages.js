@@ -17,6 +17,13 @@ const reducer = (previousState = initalState, { type, payload }) => {
         }
         return message;
       });
+    case 'CLIENT_OFFLINE':
+      return [...previousState, {
+        from: payload,
+        type: 'event',
+        id: 'offline',
+        text: 'offline',
+      }];
     default:
       return previousState;
   }
