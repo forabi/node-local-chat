@@ -39,43 +39,40 @@ Promise.all([3002, getPort()]).then(ports => {
   bonjour.publish(options);
   logger.info(`Bonjour service published on port ${bonjourPort}`);
 
-  const getFallbackDisplayName = memoize(id => {
-    const header = io.sockets.connected[id].request.headers['user-agent'];
-    const ua = useragent(header);
-    const browser = ua.browser.name;
-    const os = ua.os.name;
-    return `${browser} on ${os}`;
-  });
-
-  const socketNames = { };
-
   io.on('connection', socket => {
     logger.info('New client connected');
 
-    socket.info = {
-      id: socket.id,
-      displayName: socketNames[socket.id] || getFallbackDisplayName(socket.id),
-    };
+    const getFallbackDisplayName = memoize(id => {
+      const header = io.sockets.connected[id].request.headers['user-agent'];
+      const ua = useragent(header);
+      const browser = ua.browser.name;
+      const os = ua.os.name;
+      return `${browser} on ${os}`;
+    });
+
+    const getClientInfo = id => ({
+      id,
+      displayName: getFallbackDisplayName(id),
+    });
 
     const getClients = () => (
-      Object.keys(io.sockets.connected)
-      .map(s => s.info)
+      Object.keys(io.sockets.connected).map(getClientInfo)
     );
 
-    io.emit('action', {
+    socket.broadcast.emit('action', {
       type: 'NEW_CLIENT',
-      payload: socket.info,
+      payload: getClientInfo(socket.id),
     });
 
     socket.on('reconnect', () => {
-      io.emit('action', {
+      socket.broadcast.emit('action', {
         type: 'CLIENT_ONLINE',
         payload: socket.id,
       });
     });
 
     socket.on('disconnect', () => {
-      io.emit('action', {
+      socket.broadcast.emit('action', {
         type: 'CLIENT_OFFLINE',
         payload: socket.id,
       });
@@ -84,6 +81,11 @@ Promise.all([3002, getPort()]).then(ports => {
     socket.emit('action', {
       type: 'SET_CLIENT_ID',
       payload: socket.id,
+    });
+
+    socket.emit('action', {
+      type: 'CLIENTS_UPDATED',
+      payload: getClients(),
     });
 
     socket.on('action', action => {

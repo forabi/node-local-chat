@@ -10,7 +10,7 @@
     "server": "node server.js",
     "dev": "NODE_ENV=development npm run server",
     "hot": "HOT=1 NODE_ENV=development npm run dev",
-    "prod": "NODE_ENV=production webpack --bail --progress && NODE_ENV=production npm run server"
+    "prod": "NODE_ENV=production webpack --config web-client/webpack.config.js --bail --progress && NODE_ENV=production npm run server"
   },
   "keywords": [],
   "author": "Muhammad Fawwaz Orabi <mfawwaz93@gmail.com> (http://forabi.github.io)",
@@ -50,6 +50,7 @@
     "babel-preset-es2015-node5": "^1.2.0",
     "babel-preset-es2015-rollup": "^1.1.1",
     "babel-preset-react": "^6.5.0",
+    "babel-preset-react-optimize": "^1.0.1",
     "babel-preset-stage-3": "^6.5.0",
     "babel-register": "^6.7.2",
     "css-loader": "^0.23.1",

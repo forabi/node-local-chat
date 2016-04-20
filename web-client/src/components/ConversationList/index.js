@@ -56,7 +56,7 @@ export class ConversationList extends PureComponent {
                 <OnlineIcon isOnline={conversation.online}/>
               </ListItem>
             );
-          })
+          })  
         }
       </List>}
     </div>);

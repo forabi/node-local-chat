@@ -30,8 +30,10 @@ if (env.isDevelopment && env.isHot) {
 
 if (env.isProduction) {
   [
-    'transform-react-constant-elements',
-    'transform-react-inline-elements',
+    'react-optimize',
+  ].forEach(p => config.presets.push(p));
+
+  [
     'transform-node-env-inline',
   ].forEach(p => config.plugins.push(p));
   config.sourceMaps = false;
