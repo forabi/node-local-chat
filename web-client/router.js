@@ -12,7 +12,9 @@ if (env.isDevelopment) {
 
   router.use(webpackdevMiddleware(compiler, {
     publicPath: webpackConfig.output.publicPath,
-    noInfo: true,
+    stats: {
+      colors: true,
+    },
   }));
 
   router.use(webpackHotMiddleware(compiler, {

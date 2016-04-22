@@ -62,6 +62,7 @@ if (env.isDevelopment) {
   if (env.isHot) {
     config.devServer.hot = true;
     config.entry.bundle.unshift('webpack-hot-middleware/client');
+    config.entry.bundle.unshift('react-hot-loader/patch');
     config.output.publicPath = 'http://localhost:8080/';
     config.plugins.unshift(new webpack.HotModuleReplacementPlugin());
   }

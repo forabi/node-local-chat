@@ -1,14 +1,23 @@
 import React from 'react';
 import { render } from 'react-dom';
-import store from './store';
-import App from './components/App';
-import { Provider as ReduxProvider } from 'react-redux';
+import App from './reduxApp';
 import injectTapEventPlugin from 'react-tap-event-plugin';
+import { AppContainer } from 'react-hot-loader';
 
 injectTapEventPlugin();
 
+const mountElement = document.getElementById('container');
+
+
 render((
-  <ReduxProvider store={store}>
-    <App />
-  </ReduxProvider>
-), document.getElementById('container'));
+  <AppContainer component={App} />
+), mountElement);
+
+if (module.hot) {
+  module.hot.accept('./reduxApp', () => {
+    render(
+        <AppContainer component={ require('./reduxApp').default } />,
+        mountElement
+    );
+  });
+}

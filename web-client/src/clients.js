@@ -1,7 +1,7 @@
 import pullAllBy from 'lodash/pullAllBy';
 import map from 'lodash/map';
 
-const reducer = (previousState = [], { type, payload }) => {
+const reducer = (previousState = [], { type, payload } = { }) => {
   switch (type) {
     case 'CLIENTS_UPDATED':
       return payload;

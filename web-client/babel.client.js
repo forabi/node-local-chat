@@ -9,23 +9,24 @@ const config = {
 };
 
 if (env.isDevelopment && env.isHot) {
-  config.plugins.push(['react-transform', {
-    transforms: [
-      {
-        transform: 'react-transform-hmr',
-        imports: ['react'],
-        locals: ['module'],
-      },
-      {
-        transform: 'react-transform-catch-errors',
-        imports: ['react', 'redbox-react'],
-      },
-      {
-        transform: 'react-transform-render-visualizer',
-        imports: ['react'],
-      },
-    ],
-  }]);
+  config.plugins.push('react-hot-loader/babel');
+  // config.plugins.push(['react-transform', {
+  //   transforms: [
+  //     {
+  //       transform: 'react-transform-hmr',
+  //       imports: ['react'],
+  //       locals: ['module'],
+  //     },
+  //     {
+  //       transform: 'react-transform-catch-errors',
+  //       imports: ['react', 'redbox-react'],
+  //     },
+  //     {
+  //       transform: 'react-transform-render-visualizer',
+  //       imports: ['react'],
+  //     },
+  //   ],
+  // }]);
 }
 
 if (env.isProduction) {

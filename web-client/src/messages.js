@@ -2,7 +2,7 @@ import map from 'lodash/map';
 
 const initalState = [];
 
-const reducer = (previousState = initalState, { type, payload }) => {
+const reducer = (previousState = initalState, { type, payload } = { }) => {
   switch (type) {
     case 'INCOMING_MESSAGE':
     case 'OUTGOING_MESSAGE':
