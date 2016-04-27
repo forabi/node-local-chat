@@ -5,7 +5,6 @@ const express = require('express');
 const socketIO = require('socket.io');
 const http = require('http');
 const getPort = require('get-port');
-const _ = require('lodash');
 const clientRouter = require('./web-client/router');
 const useragent = require('ua-parser-js');
 const Promise = require('bluebird');
@@ -92,18 +91,18 @@ Promise.all([3002, getPort()]).then(ports => {
       logger.debug('Server received action', action);
       switch (action.type) {
         case 'SET_DISPLAY_NAME':
-          socketNames[socket.id] = action.payload;
+          // socketNames[socket.id] = action.payload;
           io.emit('CLIENTS_UPDATED', getClients());
           break;
         case 'OUTGOING_MESSAGE':
+          console.log('outgoing', action);
           socket.broadcast.to(action.payload.to)
             .emit('action', {
               type: 'INCOMING_MESSAGE',
-              payload: {
+              payload: Object.assign({ }, action.payload, {
                 from: socket.id,
-                text: action.payload.text,
-                date: new Date,
-              },
+                dateReceived: new Date,
+              }),
             });
           break;
         default:

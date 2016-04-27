@@ -40,10 +40,9 @@ export class ConversationList extends PureComponent {
       <List className={style.list}>
         {
           conversations.map(conversation => {
-            let className = className = 'activeListItem';
-            console.log('compare', conversation.id === activeConversationId)
-            if (conversation.id === activeConversationId) {
-              className == 'activeListItem';
+            let className = 'activeListItem';
+            if (conversation.id !== activeConversationId) {
+              className == 'listItem';
             }
             return (
               <ListItem className={style[className]}

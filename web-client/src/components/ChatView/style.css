@@ -46,6 +46,11 @@
   composes: messageContainer;
 }
 
+.messageContainerEvent {
+  composes: messageContainer;
+  text-align: center;
+}
+
 .composeForm {
   grid-area: compose-form;
   display: flex;

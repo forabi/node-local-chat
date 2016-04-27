@@ -4,6 +4,10 @@
   align-self: flex-end;
 }
 
+.message_event {
+  /* @TODO */
+}
+
 .bubble {
   display: flex;
   justify-content: space-between;

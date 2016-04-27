@@ -15,16 +15,20 @@ import SelectChat from './SelectChat';
 
 export class ChatView extends PureComponent {
   state = {
-    message: '',
+    message: {
+      text: '',
+    },
   };
 
   onComponentDidMount() {
-    // @TODO: scroll to first unread message
+    if (this.refs.firstUnread) {
+      this.refs.firstUnread.scrollIntoView();
+    }
   }
 
   render() {
     const { conversationId, info, messages, dispatch } = this.props;
-    console.log(this.state);
+    let firstUnread = false;
     return (
       <div className={this.props.className}>
         <div className={style.root}>{
@@ -38,18 +42,21 @@ export class ChatView extends PureComponent {
             </Toolbar>
             <div className={style.messagesList}>{
               messages.map((message, i) => {
-                const direction = message.from === conversationId ? 'left' : 'right';
+                const direction = message.type === 'event' ? 'none' : message.from === conversationId ? 'left' : 'right';
+                if (!firstUnread && message.unread) {
+                  firstUnread = true;
+                }
                 return (
-                  <div
+                  <div ref={firstUnread ? 'firstUnread' : undefined}
                     key={i}
                     className={
-                      direction === 'left' ?
+                      direction === 'none' ? style.messageContainerEvent : direction === 'left' ?
                       style.messageContainerLeft : style.messageContainerRight
                     }
                   >
                     <Message
                       direction={direction}
-                      {...message}
+                      {...message} date={message.dateSent || message.dateReceived}
                       style={{ float: direction, clear: 'both' }}
                     />
                 </div>);
@@ -66,13 +73,13 @@ export class ChatView extends PureComponent {
               >
                 <TextField
                   className={style.inputField}
-                  onChange={ e => this.setState({ message: e.target.value }) }
-                  value={this.state.message}
+                  onChange={ e => this.setState({ message: { text: e.target.value } }) }
+                  value={this.state.message.text}
                   hintText="Type a message"
                 />
                 <FloatingActionButton mini
                   type="submit"
-                  disabled={!info.online || !this.state.message}
+                  disabled={!info.online || !this.state.message.text}
                 >
                   <SendIcon />
                 </FloatingActionButton>

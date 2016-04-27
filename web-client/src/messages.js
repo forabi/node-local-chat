@@ -22,7 +22,7 @@ const reducer = (previousState = initalState, { type, payload }) => {
         from: payload,
         type: 'event',
         id: 'offline',
-        text: 'offline',
+        text: 'Client went offline. You can no longer send messages.',
       }];
     default:
       return previousState;

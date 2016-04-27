@@ -2,15 +2,27 @@ import React, { PropTypes } from 'react';
 import RelativeDate from '../RelativeDate';
 import style from './style.css';
 
-const Message = ({ text, date, direction, style: inlineStyle }) => (
-  <div
-    style={inlineStyle}
-    className={direction === 'right' ? style.bubble__right : style.bubble__left }
-  >
-    {text}
-    <small className={style.date}><RelativeDate>{date}</RelativeDate></small>
-  </div>
-);
+const Message = ({ text, date, direction, style: inlineStyle }) => {
+  let className;
+  if (direction === 'right') {
+    className = style.bubble__right;
+  } else if (direction === 'left') {
+    className = style.bubble__left;
+  } else {
+    className = style.message_event;
+  }
+  return (
+    <div
+      style={inlineStyle}
+      className={className}
+    >
+      {text}
+      <small className={style.date}>
+          <RelativeDate>{date}</RelativeDate>
+      </small>
+    </div>
+  );
+};
 
 Message.propTypes = {
   text: PropTypes.string.isRequired,
