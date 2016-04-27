@@ -42,7 +42,7 @@ export class ConversationList extends PureComponent {
           conversations.map(conversation => {
             let className = 'activeListItem';
             if (conversation.id !== activeConversationId) {
-              className == 'listItem';
+              className = 'listItem';
             }
             return (
               <ListItem className={style[className]}
