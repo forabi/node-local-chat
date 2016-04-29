@@ -64,8 +64,9 @@
     "react-hot-loader": "^3.0.0-alpha.13",
     "react-svg-loader": "^1.0.1",
     "style-loader": "^0.13.1",
+    "typings": "^0.8.1",
     "ua-parser-js": "^0.7.10",
-    "webpack": "^2.0.5-beta",
+    "webpack": "^2.1.0-beta.6",
     "webpack-dev-middleware": "^1.6.1",
     "webpack-dev-server": "^1.14.1",
     "webpack-hot-middleware": "^2.10.0"
