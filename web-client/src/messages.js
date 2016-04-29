@@ -27,7 +27,7 @@ const reducer = (previousState = initalState, { type, payload }) => {
     case 'SET_ACTIVE_CONVERSATION':
       return map(previousState, message => {
         if (message.from === payload) {
-          return { ...message, read: true };
+          return { ...message, status: 'read' };
         }
         return message;
       });

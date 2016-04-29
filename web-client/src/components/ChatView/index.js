@@ -11,16 +11,7 @@ import SendIcon from 'material-ui/svg-icons/content/send';
 import Message from '../Message';
 import style from './style.css';
 import SelectChat from './SelectChat';
-
-const messageType = PropTypes.shape({
-  type: PropTypes.oneOf(['text', 'event', 'image', 'video', 'url', 'contact']).isRequired,
-  from: PropTypes.string,
-  to: PropTypes.string,
-  text: PropTypes.string,
-  dateSent: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]).isRequired,
-  dateReceived: PropTypes.string,
-  status: PropTypes.oneOf(['pending', 'sent', 'delivered', 'unread']).isRequired,
-});
+import { messageShape } from '../propTypes';
 
 export class ChatView extends PureComponent {
   state = {
@@ -34,7 +25,7 @@ export class ChatView extends PureComponent {
     // @TODO: do not show 'select someone to chat with if no clients are online'
     clientsAvailable: PropTypes.bool.isRequired,
     converstionId: PropTypes.oneOf([null, PropTypes.string.isRequired]),
-    messages: PropTypes.arrayOf(messageType),
+    messages: PropTypes.arrayOf(messageShape),
     info: PropTypes.shape({
       displayName: PropTypes.string.isRequired,
       online: PropTypes.bool.isRequired,

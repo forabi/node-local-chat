@@ -7,6 +7,8 @@ import ListItem from 'material-ui/List/ListItem';
 import Avatar from 'material-ui/Avatar';
 import OnlineIcon from '../OnlineIcon';
 import style from './style.css';
+import { messageShape } from '../propTypes';
+import NotificationBadge from '../NotificationBadge';
 
 export const conversationIdShape = PropTypes.string;
 export const converstionShape = PropTypes.shape({
@@ -14,15 +16,11 @@ export const converstionShape = PropTypes.shape({
   displayName: PropTypes.string,
   id: conversationIdShape.isRequired,
 });
-export const conversationShape = PropTypes.shape({
-  text: PropTypes.string.isRequired,
-  read: PropTypes.bool.isRequired,
-});
 
 export class ConversationList extends PureComponent {
   static propTypes = {
     activeConversationId: conversationIdShape,
-    conversations: PropTypes.arrayOf(conversationShape),
+    conversations: PropTypes.arrayOf(messageShape),
   };
 
   render() {
@@ -42,7 +40,8 @@ export class ConversationList extends PureComponent {
                 key={conversation.id} style={style}
                 leftAvatar={<Avatar>{conversation.displayName.substring(0, 1)}</Avatar>}
                 rightIcon={
-                  <span>{conversation.unreadCount > 0 ? conversation.unreadCount : null}</span>
+                  conversation.unreadCount === 0 ? null :
+                    <NotificationBadge count={conversation.unreadCount} />
                 }
                 onClick={() => dispatch(setActiveConversation(conversation.id))}
               >

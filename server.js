@@ -11,6 +11,7 @@ const Promise = require('bluebird');
 const logger = require('winston');
 const memoize = require('lodash/memoize');
 const pkg = require('./package.json');
+const assign = require('lodash/assign');
 
 const app = express();
 const httpServer = http.createServer(app);
@@ -84,7 +85,7 @@ Promise.all([3002, getPort()]).then(ports => {
           socket.broadcast.to(action.payload.to)
             .emit('action', {
               type: 'INCOMING_MESSAGE',
-              payload: Object.assign({ }, action.payload, {
+              payload: assign({ }, action.payload, {
                 from: socket.id,
                 status: 'delivered',
                 dateReceived: new Date,

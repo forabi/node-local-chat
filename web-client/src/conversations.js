@@ -16,9 +16,10 @@ export const getConversations = createSelector(
     conversations = mapValues({
       ...mapValues(conversations, c => ({ ...c, online: false })),
       ...keyBy(map(filter(clients, ({ id }) => id !== clientId), c => ({ ...c, online: true })), 'id'),
-    }, c => ({
+    },
+      c => ({
         ...c,
-        unreadCount: filter(messages, m => m.from === c.id && !m.read).length
+        unreadCount: filter(messages, m => m.from === c.id && m.status !== 'read').length,
       })
     );
     return conversations;
