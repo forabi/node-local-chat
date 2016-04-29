@@ -1,5 +1,5 @@
 .metadata_container {
-  color: rgba(0,0,0,0.5);
+  color: rgba(0, 0, 0, 0.5);
   margin: 0 5px;
   align-self: flex-end;
   display: flex;
@@ -14,11 +14,11 @@
 }
 
 .message {
-  filter: drop-shadow(0 1px 1px rgba(0,0,0,0.2));
-  -webkit-filter: drop-shadow(0 1px 1px rgba(0,0,0,0.2));
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.2));
+  -webkit-filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.2));
   border-radius: 5px;
   padding: 5px;
-  margin: 0 12px; 
+  margin: 0 12px;
 }
 
 .message__event {
@@ -43,7 +43,7 @@
   background: #dcf8c6;
 }
 
-.bubble__right:after {
+.bubble__right::after {
   border-color: transparent #dcf8c6;
   border-width: 8px 0 8px 11px;
   right: -11px;
@@ -54,13 +54,14 @@
   background: white;
 }
 
-.bubble__left:after {
+.bubble__left::after {
   border-width: 8px 11px 8px 0;
   border-color: transparent white;
   left: -11px;
 }
 
-.bubble__right:after, .bubble__left:after {
+.bubble__right::after,
+.bubble__left::after {
   content: '';
   position: absolute;
   border-style: solid;

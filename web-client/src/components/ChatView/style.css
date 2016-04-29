@@ -18,8 +18,10 @@
   grid-template-areas: "header" "messages" "compose-form";
   height: 100%;
   width: 100%;
+
   /* @TODO */
-  /*background-image: url('./bg.jpg');*/
+
+  /* background-image: url('./bg.jpg'); */
 }
 
 .header {
@@ -30,7 +32,7 @@
 .message_list {
   grid-area: messages;
   width: 100%;
-  max-width: 800px; 
+  max-width: 800px;
   justify-self: center;
   overflow-y: scroll;
 }
@@ -59,7 +61,7 @@
 
 .compose_container {
   width: 100%;
-  background-color: rgba(255,255,255,.7);
+  background-color: rgba(255, 255, 255, 0.7);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -69,7 +71,7 @@
   grid-area: compose-form;
   display: flex;
   width: 100%;
-  max-width: 800px; 
+  max-width: 800px;
   justify-self: center;
   padding: 10px;
 }
@@ -77,4 +79,3 @@
 .input {
   flex-grow: 1;
 }
-
