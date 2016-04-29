@@ -1,5 +1,6 @@
 tmp
 node_modules
-web-client/bundle.js
+web-client/public/*.js
+web-client/public/*.css
 *.log
 typings
