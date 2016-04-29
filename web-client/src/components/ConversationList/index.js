@@ -8,13 +8,6 @@ import Avatar from 'material-ui/Avatar';
 import OnlineIcon from '../OnlineIcon';
 import style from './style.css';
 
-const styles = {
-  conversation: { },
-  activeConversation: {
-    background: 'lightblue',
-  },
-};
-
 export const conversationIdShape = PropTypes.string;
 export const converstionShape = PropTypes.shape({
   unreadCount: PropTypes.number,
@@ -33,31 +26,32 @@ export class ConversationList extends PureComponent {
   };
 
   render() {
-    const { conversations, displayName, activeConversationId, dispatch } = this.props;
-    
+    const { conversations, activeConversationId, dispatch } = this.props;
+
     return (<div className={this.props.className}>
       {!conversations.length ? <span>No clients online</span> :
-      <List className={style.list}>
-        {
+        <List className={style.list}>{
           conversations.map(conversation => {
-            let className = 'activeListItem';
+            let className = style.list_item__active;
             if (conversation.id !== activeConversationId) {
-              className = 'listItem';
+              className = style.list_item;
             }
             return (
-              <ListItem className={style[className]}
+              <ListItem
+                className={className}
                 key={conversation.id} style={style}
                 leftAvatar={<Avatar>{conversation.displayName.substring(0, 1)}</Avatar>}
-                rightIcon={ <span>{conversation.unreadCount > 0 ? conversation.unreadCount : null}</span> }
-                onClick={ () => dispatch(setActiveConversation(conversation.id)) }
+                rightIcon={
+                  <span>{conversation.unreadCount > 0 ? conversation.unreadCount : null}</span>
+                }
+                onClick={() => dispatch(setActiveConversation(conversation.id))}
               >
                 {conversation.displayName}
-                <OnlineIcon isOnline={conversation.online}/>
+                <OnlineIcon isOnline={conversation.online} />
               </ListItem>
             );
-          })  
-        }
-      </List>}
+          })
+        }</List>}
     </div>);
   }
 }

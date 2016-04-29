@@ -7,20 +7,20 @@ class RelativeDate extends PureComponent {
     children: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]).isRequired,
     style: PropTypes.object,
   };
-  
+
   componentWillUnmount() {
     clearInterval(this.interval);
   }
-  
+
   componentDidMount() {
     this.interval = setInterval(() => {
       this.forceUpdate();
     }, 1000);
   }
-  
+
   render() {
     const { children } = this.props;
-    return (<span {...this.props}>{ moment(children).fromNow() }</span>);
+    return (<span {...this.props}>{moment(children).fromNow()}</span>);
   }
 }
 

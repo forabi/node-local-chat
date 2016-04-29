@@ -1,3 +1,5 @@
+import uuid from 'node-uuid';
+
 export const setActiveConversation = payload => ({
   type: 'SET_ACTIVE_CONVERSATION',
   payload,
@@ -5,12 +7,12 @@ export const setActiveConversation = payload => ({
 
 export const sendMessageTo = (to, message) => ({
   type: 'OUTGOING_MESSAGE',
-  payload: { to, ...message, dateSent: new Date },
+  payload: { to, ...message, id: uuid.v4(), dateSent: new Date },
 });
 
-export const markMessageAsSeen = messageId => ({
-  type: 'MARK_MESSAGE_SEEN',
-  payload: messageId,
+export const markMessageAsRead = ({ id, from }) => ({
+  type: 'UPDATE_MESSAGE',
+  payload: { id, from, status: 'read' },
 });
 
 export const setDisplayName = name => ({

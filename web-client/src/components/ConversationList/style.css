@@ -6,10 +6,11 @@
   
 }
 
-.listItem {
+.list_item {
   
 }
 
-.activeListItem {
+.list_item__active {
+  composes: list_item;
   background: lightblue !important;
 }

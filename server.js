@@ -10,6 +10,7 @@ const useragent = require('ua-parser-js');
 const Promise = require('bluebird');
 const logger = require('winston');
 const memoize = require('lodash/memoize');
+const pkg = require('./package.json');
 
 const app = express();
 const httpServer = http.createServer(app);
@@ -22,21 +23,6 @@ Promise.all([3002, getPort()]).then(ports => {
   const httpPort = ports[0];
   const bonjourPort = ports[1];
   logger.debug('Got available ports:', httpPort, bonjourPort);
-
-  const options = {
-    type: 'http',
-    port: bonjourPort,
-    subtypes: ['LocalChat'],
-  };
-
-  try {
-    options.name = `LocalChat (${username.sync()})`;
-  } catch (e) {
-    options.name = 'LocalChat (unknown username)';
-  }
-
-  bonjour.publish(options);
-  logger.info(`Bonjour service published on port ${bonjourPort}`);
 
   io.on('connection', socket => {
     logger.info('New client connected');
@@ -95,14 +81,32 @@ Promise.all([3002, getPort()]).then(ports => {
           io.emit('CLIENTS_UPDATED', getClients());
           break;
         case 'OUTGOING_MESSAGE':
-          console.log('outgoing', action);
           socket.broadcast.to(action.payload.to)
             .emit('action', {
               type: 'INCOMING_MESSAGE',
               payload: Object.assign({ }, action.payload, {
                 from: socket.id,
+                status: 'delivered',
                 dateReceived: new Date,
               }),
+            });
+          socket.emit('action', {
+            type: 'UPDATE_MESSAGE',
+            payload: {
+              id: action.payload.id,
+              status: 'sent',
+              dateSent: new Date,
+            },
+          });
+          break;
+        case 'MESSAGE_STATUS_CHANGED':
+          socket.broadcast.to(action.payload.from)
+            .emit('action', {
+              type: 'UPDATE_MESSAGE',
+              payload: {
+                id: action.payload.id,
+                status: 'delivered',
+              },
             });
           break;
         default:
@@ -111,9 +115,29 @@ Promise.all([3002, getPort()]).then(ports => {
     });
   });
 
-  httpServer.listen(httpPort, () => {
-    logger.info(`Socket.io Server is listening on port ${httpPort}`);
-    logger.info(`Web client is up on http://localhost:${httpPort}/`);
+  httpServer.listen(httpPort, 'localhost', () => {
+    const address = httpServer.address();
+    logger.info(`Socket.io Server is listening on port ${address.port}`);
+    logger.info(`Web client is up on http://${address.address}:${address.port}/`);
+    
+    const options = {
+      type: 'http',
+      port: bonjourPort,
+      txt: {
+        localchat: pkg.version,
+        address: address.address,
+        port: address.port,
+      },
+    };
+
+    try {
+      options.name = `LocalChat (${username.sync()})`;
+    } catch (e) {
+      options.name = 'LocalChat (unknown username)';
+    }
+
+    bonjour.publish(options);
+    logger.info(`Bonjour service published on port ${bonjourPort}`);
   });
 }).catch(e => {
   logger.error('Unexpected error', e);

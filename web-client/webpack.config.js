@@ -33,6 +33,12 @@ const config = {
     }, {
       test: /\.svg$/,
       loaders: ['babel', 'react-svg'],
+    }, {
+      test: /\.(jpg|png)$/,
+      loader: 'file',
+    }, {
+      test: /\.json$/,
+      loader: 'json',
     }],
   },
 
@@ -62,7 +68,6 @@ if (env.isDevelopment) {
   if (env.isHot) {
     config.devServer.hot = true;
     config.entry.bundle.unshift('webpack-hot-middleware/client');
-    config.output.publicPath = 'http://localhost:8080/';
     config.plugins.unshift(new webpack.HotModuleReplacementPlugin());
   }
 }

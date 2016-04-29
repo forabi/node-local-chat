@@ -1,14 +1,28 @@
 import map from 'lodash/map';
+import slice from 'lodash/slice';
+import findIndex from 'lodash/findIndex';
 
 const initalState = [];
 
 const reducer = (previousState = initalState, { type, payload }) => {
+  let index;
   switch (type) {
     case 'INCOMING_MESSAGE':
+      return [
+        ...previousState,
+        { ...payload, status: 'pending', incoming: true },
+      ];
     case 'OUTGOING_MESSAGE':
       return [
         ...previousState,
-        payload,
+        { ...payload, status: 'pending', outgoing: true },
+      ];
+    case 'UPDATE_MESSAGE':
+      index = findIndex(previousState, { id: payload.id });
+      return [
+        ...slice(previousState, 0, index),
+        { ...previousState[index], ...payload },
+        ...slice(previousState, index + 1),
       ];
     case 'SET_ACTIVE_CONVERSATION':
       return map(previousState, message => {
