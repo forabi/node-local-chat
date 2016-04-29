@@ -9,8 +9,7 @@ const outgoingActions = [
 const socketMiddleware = () => next => ({ type, payload }) => {
   if (includes(outgoingActions, type)) {
     socket.emit('action', { type, payload });
-  }
-  if (type === 'INCOMING_MESSAGE') {
+  } else if (type === 'INCOMING_MESSAGE') {
     socket.emit('action', {
       type: 'MESSAGE_STATUS_CHANGED',
       payload: {
