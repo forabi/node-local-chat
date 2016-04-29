@@ -53,7 +53,7 @@ export class ChatView extends PureComponent {
                 </ToolbarGroup>
               </Toolbar>
               <div className={style.message_list}>{
-                messages.map((message, i) => {
+                messages.map(message => {
                   let direction; let className;
                   if (message.type === 'event') {
                     direction = 'none';
@@ -96,7 +96,9 @@ export class ChatView extends PureComponent {
                 >
                   <TextField
                     className={style.input}
-                    onChange={e => this.setState({ message: { text: e.target.value, type: 'text' } })}
+                    onChange={e => {
+                      this.setState({ message: { text: e.target.value, type: 'text' } });
+                    }}
                     value={this.state.message.text}
                     hintText="Type a message"
                   />
