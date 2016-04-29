@@ -1,6 +1,6 @@
 const env = require('../env');
 const config = {
-  presets: ['es2015-native-modules', 'stage-3', 'react'],
+  presets: ['es2015-webpack', 'stage-3', 'react'],
   plugins: [
     'transform-object-rest-spread',
     'transform-class-properties',
