@@ -10,7 +10,9 @@ const config = {
   devtool: 'source-map',
 
   entry: {
-    bundle: [path.resolve(__dirname, 'src/index.js')],
+    bundle: [
+      path.resolve(__dirname, 'src/index.js'),
+    ],
   },
 
   output: {
@@ -22,8 +24,12 @@ const config = {
     loaders: [{
       test: /\.jsx?$/,
       exclude: /node_modules/,
-      loader: 'babel',
-      query: Object.assign(babelConfig, { cacheDirectory: './tmp' }),
+      loaders: [
+        {
+          loader: 'babel',
+          query: Object.assign(babelConfig, { cacheDirectory: './tmp' }),
+        },
+      ],
     }, {
       test: /\.css$/,
       loader: ExtractTextPlugin.extract(
