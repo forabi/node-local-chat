@@ -10,6 +10,16 @@ const socketMiddleware = () => next => ({ type, payload }) => {
   if (includes(outgoingActions, type)) {
     socket.emit('action', { type, payload });
   }
+  if (type === 'INCOMING_MESSAGE') {
+    socket.emit('action', {
+      type: 'MESSAGE_STATUS_CHANGED',
+      payload: {
+        id: payload.id,
+        from: payload.from,
+        status: 'delivered',
+      },
+    });
+  }
   return next({ type, payload });
 };
 

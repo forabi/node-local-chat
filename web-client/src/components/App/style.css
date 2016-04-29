@@ -20,12 +20,12 @@ html, body {
   justify-content: flex-start !important;
 }
 
-.conversationList {
+.conversation_list {
   grid-column: 1;
   grid-row: 2;
 }
 
-.chatView {
+.chat_view {
   grid-row: 1 / span 2;
   grid-column: 2;
   height: 100%;

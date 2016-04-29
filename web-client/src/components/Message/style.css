@@ -1,7 +1,33 @@
-.date {
-  color: gray;
+.metadata_container {
+  color: rgba(0,0,0,0.5);
   margin: 0 5px;
   align-self: flex-end;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 5px;
+  font-size: 12px;
+}
+
+.metadata_container > * {
+  margin: 0 2px;
+}
+
+.message {
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,0.2));
+  -webkit-filter: drop-shadow(0 1px 1px rgba(0,0,0,0.2));
+  border-radius: 5px;
+  padding: 5px;
+  margin: 0 12px; 
+}
+
+.message__event {
+  background: #d4eaf4;
+  display: flex;
+  color: #666;
+  text-align: center;
+  align-self: center;
+  composes: message;
 }
 
 .bubble {
@@ -9,9 +35,7 @@
   justify-content: space-between;
   position: relative;
   max-width: 400px;
-  border-radius: 5px;
-  padding: 5px;
-  margin: 0 12px;
+  composes: message;
 }
 
 .bubble__right {
@@ -27,12 +51,12 @@
 
 .bubble__left {
   composes: bubble;
-  background: #D4E2F3;
+  background: white;
 }
 
 .bubble__left:after {
   border-width: 8px 11px 8px 0;
-  border-color: transparent #D4E2F3;
+  border-color: transparent white;
   left: -11px;
 }
 

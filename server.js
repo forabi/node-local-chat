@@ -5,12 +5,13 @@ const express = require('express');
 const socketIO = require('socket.io');
 const http = require('http');
 const getPort = require('get-port');
-const _ = require('lodash');
 const clientRouter = require('./web-client/router');
 const useragent = require('ua-parser-js');
 const Promise = require('bluebird');
 const logger = require('winston');
 const memoize = require('lodash/memoize');
+const pkg = require('./package.json');
+const assign = require('lodash/assign');
 
 const app = express();
 const httpServer = http.createServer(app);
@@ -23,21 +24,6 @@ Promise.all([3002, getPort()]).then(ports => {
   const httpPort = ports[0];
   const bonjourPort = ports[1];
   logger.debug('Got available ports:', httpPort, bonjourPort);
-
-  const options = {
-    type: 'http',
-    port: bonjourPort,
-    subtypes: ['LocalChat'],
-  };
-
-  try {
-    options.name = `LocalChat (${username.sync()})`;
-  } catch (e) {
-    options.name = 'LocalChat (unknown username)';
-  }
-
-  bonjour.publish(options);
-  logger.info(`Bonjour service published on port ${bonjourPort}`);
 
   io.on('connection', socket => {
     logger.info('New client connected');
@@ -92,17 +78,35 @@ Promise.all([3002, getPort()]).then(ports => {
       logger.debug('Server received action', action);
       switch (action.type) {
         case 'SET_DISPLAY_NAME':
-          socketNames[socket.id] = action.payload;
+          // socketNames[socket.id] = action.payload;
           io.emit('CLIENTS_UPDATED', getClients());
           break;
         case 'OUTGOING_MESSAGE':
           socket.broadcast.to(action.payload.to)
             .emit('action', {
               type: 'INCOMING_MESSAGE',
-              payload: {
+              payload: assign({ }, action.payload, {
                 from: socket.id,
-                text: action.payload.text,
-                date: new Date,
+                status: 'delivered',
+                dateReceived: new Date,
+              }),
+            });
+          socket.emit('action', {
+            type: 'UPDATE_MESSAGE',
+            payload: {
+              id: action.payload.id,
+              status: 'sent',
+              dateSent: new Date,
+            },
+          });
+          break;
+        case 'MESSAGE_STATUS_CHANGED':
+          socket.broadcast.to(action.payload.from)
+            .emit('action', {
+              type: 'UPDATE_MESSAGE',
+              payload: {
+                id: action.payload.id,
+                status: 'delivered',
               },
             });
           break;
@@ -112,9 +116,29 @@ Promise.all([3002, getPort()]).then(ports => {
     });
   });
 
-  httpServer.listen(httpPort, () => {
-    logger.info(`Socket.io Server is listening on port ${httpPort}`);
-    logger.info(`Web client is up on http://localhost:${httpPort}/`);
+  httpServer.listen(httpPort, 'localhost', () => {
+    const address = httpServer.address();
+    logger.info(`Socket.io Server is listening on port ${address.port}`);
+    logger.info(`Web client is up on http://${address.address}:${address.port}/`);
+    
+    const options = {
+      type: 'http',
+      port: bonjourPort,
+      txt: {
+        localchat: pkg.version,
+        address: address.address,
+        port: address.port,
+      },
+    };
+
+    try {
+      options.name = `LocalChat (${username.sync()})`;
+    } catch (e) {
+      options.name = 'LocalChat (unknown username)';
+    }
+
+    bonjour.publish(options);
+    logger.info(`Bonjour service published on port ${bonjourPort}`);
   });
 }).catch(e => {
   logger.error('Unexpected error', e);

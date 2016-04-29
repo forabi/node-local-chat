@@ -9,7 +9,6 @@ import toArray from 'lodash/toArray';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import Toolbar from 'material-ui/Toolbar/Toolbar';
-import ToolbarGroup from 'material-ui/Toolbar/ToolbarGroup';
 import ToolbarSeparator from 'material-ui/Toolbar/ToolbarSeparator';
 import Avatar from 'material-ui/Avatar';
 import style from './style.css';
@@ -32,11 +31,14 @@ class App extends PureComponent {
           <ToolbarSeparator style={{ margin: '0 24px', top: 0 }} />
           <span>{displayName}</span>
         </Toolbar>
-        <ConversationList className={style.conversationList}
+        <ConversationList
+          className={style.conversation_list}
           activeConversationId={activeConversationId}
           conversations={toArray(conversations)}
         />
-        <ChatView className={style.chatView}
+        <ChatView
+          className={style.chat_view}
+          clientsAvailable={conversations.length}
           conversationId={activeConversationId}
           messages={activeConversationMessages}
           info={conversations[activeConversationId]}
