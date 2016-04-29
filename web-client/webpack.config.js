@@ -4,7 +4,9 @@ const babelConfig = require('./babel.client');
 const env = require('../env');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-const cssLoaders = ['style', 'css?module&localIdentName=[name]_[local]_[hash:base64:5]'];
+const extractCSS = new ExtractTextPlugin('styles.css');
+
+const cssLoaders = ['style', 'css?module=1&localIdentName=[name]_[local]_[hash:base64:5]'];
 
 const config = {
   debug: true,
@@ -34,7 +36,7 @@ const config = {
       ],
     }, {
       test: /\.css$/,
-      loaders: env.isProduction ? ExtractTextPlugin.extract(cssLoaders) : cssLoaders,
+      loader: env.isProduction ? extractCSS.extract.apply(extractCSS, cssLoaders) : cssLoaders,
     }, {
       test: /\.svg$/,
       loaders: ['babel', 'react-svg'],
@@ -56,8 +58,7 @@ const config = {
       },
       isBrowser: true,
     }),
-    new webpack.optimize.OccurrenceOrderPlugin(true),
-    new ExtractTextPlugin('styles.css'),
+    extractCSS,
     new webpack.LoaderOptionsPlugin({
       minimize: true,
       debug: false,
@@ -81,7 +82,7 @@ if (env.isDevelopment) {
 if (env.isProduction) {
   config.devtool = false;
   config.debug = false;
-  config.plugins.push(new webpack.optimize.OccurrenceOrderPlugin());
+  config.plugins.push(new webpack.optimize.OccurrenceOrderPlugin(true));
   config.plugins.push(new webpack.optimize.UglifyJsPlugin({
     compress: { warnings: false },
   }));
