@@ -71,7 +71,7 @@ export class ChatView extends PureComponent {
                   return (
                     <div
                       ref={firstUnread ? 'firstUnread' : undefined}
-                      key={i}
+                      key={message.id}
                       className={className}
                     >
                       <Message
