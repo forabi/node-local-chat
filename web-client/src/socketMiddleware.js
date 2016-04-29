@@ -1,5 +1,5 @@
 import socket from './socket';
-import includes from 'lodash/includes';
+import { includes } from 'lodash';
 
 const outgoingActions = [
   'OUTGOING_MESSAGE',

@@ -1,7 +1,5 @@
 import { createSelector } from 'reselect';
-import filter from 'lodash/filter';
-import mapValues from 'lodash/mapValues';
-import _ from 'lodash';
+import _, { filter, mapValues } from 'lodash';
 
 let conversations = { };
 

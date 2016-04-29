@@ -5,7 +5,7 @@ import ChatView from '../ChatView';
 import { connect } from 'react-redux';
 import { getConversations } from '../../conversations';
 import { getActiveConversationMessages } from '../../messages';
-import toArray from 'lodash/toArray';
+import { toArray } from 'lodash';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import Toolbar from 'material-ui/Toolbar/Toolbar';

@@ -1,5 +1,4 @@
-import pullAllBy from 'lodash/pullAllBy';
-import map from 'lodash/map';
+import { pullAllBy } from 'lodash';
 
 const reducer = (previousState = [], { type, payload } = { }) => {
   switch (type) {
