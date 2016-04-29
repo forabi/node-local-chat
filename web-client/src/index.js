@@ -8,16 +8,10 @@ injectTapEventPlugin();
 
 const mountElement = document.getElementById('container');
 
-
-render((
-  <AppContainer component={ReduxApp} />
-), mountElement);
+render(<AppContainer component={ReduxApp} />, mountElement);
 
 if (module.hot) {
   module.hot.accept('./ReduxApp', () => {
-    render(
-      <AppContainer component={ReduxApp} />,
-      mountElement
-    );
+    render(<AppContainer component={ReduxApp} />, mountElement);
   });
 }

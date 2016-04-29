@@ -4,6 +4,8 @@ const babelConfig = require('./babel.client');
 const env = require('../env');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
+const cssLoaders = ['style', 'css?module&localIdentName=[name]_[local]_[hash:base64:5]'];
+
 const config = {
   debug: true,
 
@@ -32,10 +34,7 @@ const config = {
       ],
     }, {
       test: /\.css$/,
-      loader: ExtractTextPlugin.extract(
-        'style',
-        'css?module&localIdentName=[name]_[local]_[hash:base64:5]'
-      ),
+      loaders: env.isProduction ? ExtractTextPlugin.extract(cssLoaders) : cssLoaders,
     }, {
       test: /\.svg$/,
       loaders: ['babel', 'react-svg'],

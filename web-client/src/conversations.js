@@ -1,8 +1,7 @@
 import { createSelector } from 'reselect';
-import keyBy from 'lodash/keyBy';
-import map from 'lodash/map';
 import filter from 'lodash/filter';
 import mapValues from 'lodash/mapValues';
+import _ from 'lodash';
 
 let conversations = { };
 
@@ -15,7 +14,12 @@ export const getConversations = createSelector(
   (clients, clientId, messages) => {
     conversations = mapValues({
       ...mapValues(conversations, c => ({ ...c, online: false })),
-      ...keyBy(map(filter(clients, ({ id }) => id !== clientId), c => ({ ...c, online: true })), 'id'),
+      ...(
+        _.chain(clients)
+        .filter(({ id }) => id !== clientId)
+        .map(c => ({ ...c, online: true }))
+        .keyBy('id')
+      ).value(),
     },
       c => ({
         ...c,
