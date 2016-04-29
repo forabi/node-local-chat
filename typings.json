@@ -1,0 +1,16 @@
+{
+  "name": "local-chat",
+  "version": false,
+  "dependencies": {
+    "bluebird": "registry:npm/bluebird#3.3.4+20160427051630",
+    "lodash": "registry:npm/lodash#4.0.0+20160416211519",
+    "react-redux": "registry:npm/react-redux#4.4.0+20160207114942",
+    "webpack": "registry:npm/webpack#1.12.9+20160418172948"
+  },
+  "ambientDependencies": {
+    "react": "registry:dt/react#0.14.0+20160423065914",
+    "react-dom": "registry:dt/react-dom#0.14.0+20160412154040",
+    "react-redux": "registry:dt/react-redux#4.4.0+20160406115600",
+    "socket.io": "registry:dt/socket.io#1.4.4+20160317120654"
+  }
+}
