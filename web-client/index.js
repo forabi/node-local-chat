@@ -18,11 +18,12 @@ httpServer.listen(3000, 'localhost', () => {
   const { address, port } = httpServer.address();
   log(`Web client is up at ${address}:${port}`);
   const match = server => {
+    const doesMatch = Boolean(server.type === 'http' && server.txt && server.txt.localchat);
     log(
       `${server.name} provides LocalChat?`,
-      Boolean(server.type === 'http' && server.txt && server.txt.localchat)
+      doesMatch
     );
-    return Boolean(server.type === 'http' && server.txt && server.txt.localchat);
+    return doesMatch;
   };
 
   const bonjourBrowser = bonjour.find(match);
