@@ -1,4 +1,4 @@
-import socket from './socket';
+import * as io from 'socket.io-client';
 import { includes } from 'lodash';
 
 const outgoingActions = [
@@ -6,11 +6,13 @@ const outgoingActions = [
   'SET_DISPLAY_NAME',
 ];
 
-const socketMiddleware = () => next => ({ type, payload }) => {
+let chatSocket;
+
+const socketMiddleware = store => next => ({ type, payload }) => {
   if (includes(outgoingActions, type)) {
-    socket.emit('action', { type, payload });
+    chatSocket.emit('action', { type, payload });
   } else if (type === 'INCOMING_MESSAGE') {
-    socket.emit('action', {
+    chatSocket.emit('action', {
       type: 'MESSAGE_STATUS_CHANGED',
       payload: {
         id: payload.id,
@@ -18,6 +20,13 @@ const socketMiddleware = () => next => ({ type, payload }) => {
         status: 'delivered',
       },
     });
+  } else if (type === 'SET_SERVER_ADDRESS') {
+    // Chat socket switching to another server...
+    if (chatSocket) {
+      chatSocket.io.disconnect();
+    }
+    chatSocket = io.connect(payload);
+    chatSocket.on('action', action => store.dispatch(action));
   }
   return next({ type, payload });
 };

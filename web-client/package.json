@@ -1,0 +1,13 @@
+{
+  "name": "web-client",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "hot": "NODE_ENV=development HOT=1 DEBUG=local-chat* node index.js"
+  },
+  "keywords": [],
+  "author": "Muhammad Fawwaz Orabi <mfawwaz93@gmail.com> (http://forabi.github.io)",
+  "license": "ISC"
+}

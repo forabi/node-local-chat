@@ -2,9 +2,11 @@ import { createStore, combineReducers, compose, applyMiddleware } from 'redux';
 import clients from './clients';
 import messages from './messages';
 import activeConversationId from './activeConversationId';
-import socket from './socket';
+import clientSocket from './clientSocket';
 import clientId from './clientId';
 import displayName from './displayName';
+import serverAddress from './serverAddress';
+import servers from './servers';
 import socketMiddleware from './socketMiddleware';
 
 const reducers = combineReducers({
@@ -13,6 +15,8 @@ const reducers = combineReducers({
   clients,
   activeConversationId,
   messages,
+  servers,
+  serverAddress,
 });
 
 const store = createStore(reducers,
@@ -25,6 +29,6 @@ const store = createStore(reducers,
   )
 );
 
-socket.on('action', action => store.dispatch(action));
+clientSocket.on('action', action => store.dispatch(action));
 
 export default store;

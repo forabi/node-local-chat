@@ -1,32 +1,32 @@
-'use strict';
 const bonjour = require('bonjour')();
 const username = require('username');
 const express = require('express');
+const cors = require('express-cors');
 const socketIO = require('socket.io');
 const http = require('http');
 const getPort = require('get-port');
-const clientRouter = require('./web-client/router');
 const useragent = require('ua-parser-js');
 const Promise = require('bluebird');
-const logger = require('winston');
 const memoize = require('lodash/memoize');
 const pkg = require('./package.json');
 const assign = require('lodash/assign');
+const log = require('debug')('local-chat-server');
 
 const app = express();
+
+app.use(cors({
+  allowedOrigins: ['*'],
+}));
+
 const httpServer = http.createServer(app);
 const io = socketIO(httpServer);
-
-
-app.use('/', clientRouter);
 
 Promise.all([3002, getPort()]).then(ports => {
   const httpPort = ports[0];
   const bonjourPort = ports[1];
-  logger.debug('Got available ports:', httpPort, bonjourPort);
 
   io.on('connection', socket => {
-    logger.info('New client connected');
+    log('New client connected');
 
     const getFallbackDisplayName = memoize(id => {
       const header = io.sockets.connected[id].request.headers['user-agent'];
@@ -75,7 +75,7 @@ Promise.all([3002, getPort()]).then(ports => {
     });
 
     socket.on('action', action => {
-      logger.debug('Server received action', action);
+      log('Server received action', action);
       switch (action.type) {
         case 'SET_DISPLAY_NAME':
           // socketNames[socket.id] = action.payload;
@@ -117,17 +117,17 @@ Promise.all([3002, getPort()]).then(ports => {
   });
 
   httpServer.listen(httpPort, 'localhost', () => {
-    const address = httpServer.address();
-    logger.info(`Socket.io Server is listening on port ${address.port}`);
-    logger.info(`Web client is up on http://${address.address}:${address.port}/`);
-    
+    const { address, port } = httpServer.address();
+    log(`Socket.io Server is listening on port ${port}`);
+    log(`Web client is up on http://${address}:${port}/`);
+
     const options = {
       type: 'http',
       port: bonjourPort,
       txt: {
         localchat: pkg.version,
-        address: address.address,
-        port: address.port,
+        address: address,
+        port: port,
       },
     };
 
@@ -138,8 +138,9 @@ Promise.all([3002, getPort()]).then(ports => {
     }
 
     bonjour.publish(options);
-    logger.info(`Bonjour service published on port ${bonjourPort}`);
+    log('Bonjour service published', options);
+    log(`Bonjour service published on port ${bonjourPort}`);
   });
 }).catch(e => {
-  logger.error('Unexpected error', e);
+  log('Unexpected error', e);
 });

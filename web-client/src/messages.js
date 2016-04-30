@@ -1,4 +1,4 @@
-import { map, slice, findIndex } from 'lodash';
+import { map, filter, slice, findIndex } from 'lodash';
 const initalState = [];
 
 const reducer = (previousState = initalState, { type, payload } = { }) => {
@@ -41,7 +41,6 @@ const reducer = (previousState = initalState, { type, payload } = { }) => {
 };
 
 import { createSelector } from 'reselect';
-import { filter } from 'lodash';
 
 const getMessages = state => state.messages;
 const getActiveConversationId = state => state.activeConversationId;

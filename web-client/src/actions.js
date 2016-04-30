@@ -19,3 +19,8 @@ export const setDisplayName = name => ({
   type: 'SET_DISPLAY_NAME',
   payload: name,
 });
+
+export const connectToServer = address => ({
+  type: 'SET_SERVER_ADDRESS',
+  payload: address,
+});

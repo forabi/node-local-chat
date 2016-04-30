@@ -8,8 +8,8 @@
     "lint": "eslint src",
     "lint-fix": "eslint src --fix",
     "server": "node server.js",
-    "dev": "NODE_ENV=development npm run server",
-    "hot": "HOT=1 NODE_ENV=development npm run dev",
+    "dev": "NODE_ENV=development DEBUG=local-chat* npm run server",
+    "hot": "HOT=1 NODE_ENV=development DEBUG=local-chat* npm run dev",
     "prod": "NODE_ENV=production webpack --config web-client/webpack.config.js --bail --progress && NODE_ENV=production npm run server"
   },
   "keywords": [],
@@ -18,7 +18,9 @@
   "dependencies": {
     "bluebird": "^3.3.5",
     "bonjour": "^3.3.0",
+    "debug": "^2.2.0",
     "express": "^4.13.4",
+    "express-cors": "0.0.3",
     "get-port": "^2.1.0",
     "lodash": "^4.11.1",
     "material-ui": "^0.15.0-beta.2",
@@ -31,7 +33,9 @@
     "react-tap-event-plugin": "^1.0.0",
     "redux": "^3.5.2",
     "reselect": "^2.5.1",
+    "sequelize": "^3.22.0",
     "socket.io": "^1.4.5",
+    "sqlite": "0.0.4",
     "username": "^2.1.0",
     "winston": "^2.2.0"
   },
