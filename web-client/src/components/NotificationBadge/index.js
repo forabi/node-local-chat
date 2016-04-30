@@ -1,12 +1,12 @@
 import React, { PropTypes } from 'react';
 import style from './style.css';
 
-const NotificationBadge = ({ count }) => (
+const NotificationBadge = ({ children: count }) => (
   <span className={style.root}>{count}</span>
 );
 
 NotificationBadge.propTypes = {
-  count: PropTypes.number.isRequired,
+  children: PropTypes.number.isRequired,
 };
 
 export default NotificationBadge;

@@ -41,7 +41,7 @@ export class ConversationList extends PureComponent {
                 leftAvatar={<Avatar>{conversation.displayName.substring(0, 1)}</Avatar>}
                 rightIcon={
                   conversation.unreadCount === 0 ? null :
-                    <NotificationBadge count={conversation.unreadCount} />
+                    <NotificationBadge>{conversation.unreadCount}</NotificationBadge>
                 }
                 onClick={() => dispatch(setActiveConversation(conversation.id))}
               >
