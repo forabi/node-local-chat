@@ -5,6 +5,7 @@ const socketIO = require('socket.io');
 const pkg = require('../package.json');
 const clientRouter = require('./router');
 const log = require('debug')('local-chat-web-client');
+const filter = require('lodash/filter');
 
 const app = express();
 
@@ -16,36 +17,28 @@ const io = socketIO(httpServer);
 httpServer.listen(3000, 'localhost', () => {
   const { address, port } = httpServer.address();
   log(`Web client is up at ${address}:${port}`);
-  const match = {
-    type: 'http',
-    txt: {
-      localchat: pkg.version,
-    },
+  const match = server => {
+    log(
+      `${server.name} provides LocalChat?`,
+      Boolean(server.type === 'http' && server.txt && server.txt.localchat)
+    );
+    return Boolean(server.type === 'http' && server.txt && server.txt.localchat);
   };
 
   const bonjourBrowser = bonjour.find(match);
 
-  bonjourBrowser.on('up', server => {
-    log('Chat server up', server);
-    io.emit('action', {
-      type: 'CHAT_SERVER_UP',
-      payload: server,
-    });
-  });
+  io.on('connection', socket => {
+    const updateServers = () => {
+      socket.emit('action', {
+        type: 'SET_SERVERS',
+        payload: filter(bonjourBrowser.services, match),
+      });
+    };
 
-  bonjourBrowser.on('down', server => {
-    io.emit('action', {
-      type: 'CHAT_SERVER_DOWN',
-      payload: server,
-    });
+    bonjourBrowser.on('up', updateServers);
+    bonjourBrowser.on('down', updateServers);
+    updateServers();
   });
 
   bonjourBrowser.start();
-
-  io.on('connection', socket => {
-    socket.emit('action', {
-      type: 'SET_SERVERS',
-      payload: bonjourBrowser.services,
-    });
-  });
 });
