@@ -10,7 +10,8 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 import SendIcon from 'material-ui/svg-icons/content/send';
 import Message from '../Message';
 import style from './style.css';
-import SelectChat from './SelectChat';
+import Placeholder from '../Placeholder';
+import ChatIcon from './multimedia.svg';
 import { messageShape } from '../propTypes';
 
 export class ChatView extends PureComponent {
@@ -44,7 +45,7 @@ export class ChatView extends PureComponent {
     return (
       <div className={this.props.className}>
         <div className={style.root}>{
-          !conversationId ? <SelectChat className={style.select_chat} /> :
+          !conversationId ? <Placeholder icon={ChatIcon} title="Select someone to chat with" /> :
             <div className={style.chat_view}>
               <Toolbar className={style.header} noGutter>
                 <ToolbarGroup>

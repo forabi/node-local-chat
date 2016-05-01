@@ -24,3 +24,8 @@ export const connectToServer = address => ({
   type: 'SET_SERVER_ADDRESS',
   payload: address,
 });
+
+export const requestNewServer = name => ({
+  type: 'CREATE_NEW_SERVER',
+  payload: { name },
+});

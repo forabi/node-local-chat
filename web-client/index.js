@@ -2,10 +2,11 @@ const http = require('http');
 const bonjour = require('bonjour')();
 const express = require('express');
 const socketIO = require('socket.io');
-const pkg = require('../package.json');
+const getPort = require('get-port');
 const clientRouter = require('./router');
 const log = require('debug')('local-chat-web-client');
 const filter = require('lodash/filter');
+const Server = require('../Server');
 
 const app = express();
 
@@ -39,6 +40,19 @@ httpServer.listen(3000, 'localhost', () => {
     bonjourBrowser.on('up', updateServers);
     bonjourBrowser.on('down', updateServers);
     updateServers();
+
+    socket.on('action', action => {
+      switch (action.type) {
+        case 'CREATE_NEW_SERVER':
+          getPort().then(serverPort => {
+            new Server(action.payload.name)
+              .start(serverPort, 'localhost');
+          }).then(() => updateServers());
+          break;
+        default:
+          return;
+      }
+    });
   });
 
   bonjourBrowser.start();

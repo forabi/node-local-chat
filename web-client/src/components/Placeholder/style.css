@@ -1,0 +1,18 @@
+.root {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 1;
+  flex-direction: column;
+  text-align: center;
+}
+
+.icon {
+  flex-grow: 0;
+  max-height: 128px;
+}
+
+.text {
+  flex-grow: 1;
+  margin: 15px 0;
+}
