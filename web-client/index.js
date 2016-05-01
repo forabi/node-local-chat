@@ -6,7 +6,7 @@ const getPort = require('get-port');
 const clientRouter = require('./router');
 const log = require('debug')('local-chat-web-client');
 const filter = require('lodash/filter');
-const Server = require('../Server');
+const Server = require('../server/Server');
 
 const app = express();
 

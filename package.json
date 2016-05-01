@@ -5,12 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint src",
-    "lint-fix": "eslint src --fix",
-    "server": "node server.js",
-    "dev": "NODE_ENV=development DEBUG=local-chat* npm run server",
-    "hot": "HOT=1 NODE_ENV=development DEBUG=local-chat* npm run dev",
-    "prod": "NODE_ENV=production webpack --config web-client/webpack.config.js --bail --progress && NODE_ENV=production npm run server"
+    "lint": "eslint server web-client",
+    "lint-fix": "eslint server web-client --fix",
+    "server": "DEBUG=local-chat* node ./startServer.js",
+    "client": "HOT=1 NODE_ENV=development DEBUG=local-chat* node ./web-client/index.js"
   },
   "keywords": [],
   "author": "Muhammad Fawwaz Orabi <mfawwaz93@gmail.com> (http://forabi.github.io)",

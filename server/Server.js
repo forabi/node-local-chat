@@ -6,7 +6,7 @@ const bonjour = require('bonjour')();
 const log = require('debug')('local-chat-server');
 const { assign, memoize } = require('lodash');
 const Promise = require('bluebird');
-const pkg = require('./package.json');
+const pkg = require('../package.json');
 const useragent = require('ua-parser-js');
 const getPort = require('get-port');
 
