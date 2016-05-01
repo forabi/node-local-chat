@@ -27,6 +27,12 @@ const socketMiddleware = store => next => ({ type, payload }) => {
     }
     chatSocket = io.connect(payload);
     chatSocket.on('action', action => store.dispatch(action));
+    chatSocket.on('disconnect', () => {
+      store.dispatch('CHAT_SERVER_DISCONNECTED');
+    });
+    chatSocket.on('reconnect', () => {
+      store.dispatch('CHAT_SERVER_RECONNECTED');
+    });
   }
   return next({ type, payload });
 };

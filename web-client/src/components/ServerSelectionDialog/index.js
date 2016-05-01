@@ -6,8 +6,7 @@ import { connect } from 'react-redux';
 import { connectToServer } from '../../actions';
 
 const serverShape = PropTypes.shape({
-  id: PropTypes.string.isRequired,
-  addresses: PropTypes.arrayOf([PropTypes.string.isRequired]),
+  addresses: PropTypes.arrayOf(PropTypes.string.isRequired),
   port: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   fqdn: PropTypes.string.isRequired,
@@ -30,6 +29,7 @@ const ServerSelectionDialog = ({ servers, open, dispatch }) => (
           <ListItem
             key={server.fqdn}
             primaryText={server.name}
+            secondaryText={server.txt.address}
             onClick={() => (
               dispatch(connectToServer(`${server.txt.address || 'localhost'}:${server.txt.port}`))
             )}

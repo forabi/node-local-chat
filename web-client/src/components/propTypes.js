@@ -7,5 +7,5 @@ export const messageShape = PropTypes.shape({
   text: PropTypes.string,
   dateSent: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]).isRequired,
   dateReceived: PropTypes.string,
-  status: PropTypes.oneOf(['pending', 'sent', 'delivered', 'unread']).isRequired,
+  status: PropTypes.oneOf(['pending', 'sent', 'delivered', 'read']).isRequired,
 });
