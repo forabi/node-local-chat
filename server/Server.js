@@ -108,13 +108,13 @@ class ChatServer {
           },
         });
         break;
-      case 'MESSAGE_STATUS_CHANGED':
+      case 'UPDATE_MESSAGE':
         socket.broadcast.to(action.payload.from)
           .emit('action', {
             type: 'UPDATE_MESSAGE',
             payload: {
               id: action.payload.id,
-              status: 'delivered',
+              status: action.payload.status,
             },
           });
         break;

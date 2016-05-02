@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import PureComponent from 'react-pure-render/component';
 import { connect } from 'react-redux';
-import { sendMessageTo } from '../../actions';
+import { sendMessageTo, markMessageAsRead } from '../../actions';
 import Toolbar from 'material-ui/Toolbar/Toolbar';
 import ToolbarGroup from 'material-ui/Toolbar/ToolbarGroup';
 import OnlineIcon from '../OnlineIcon';
@@ -36,6 +36,14 @@ export class ChatView extends PureComponent {
   onComponentDidMount() {
     if (this.refs.firstUnread) {
       this.refs.firstUnread.scrollIntoView();
+    }
+  }
+
+  onMessageVisible(message, dispatch) {
+    console.log('Checking...', message);
+    if (message.incoming && message.status !== 'read') {
+      console.log('Marking message as read...');
+      dispatch(markMessageAsRead(message));
     }
   }
 
@@ -79,6 +87,7 @@ export class ChatView extends PureComponent {
                         direction={direction}
                         {...message}
                         style={{ float: direction, clear: 'both' }}
+                        onVisible={() => this.onMessageVisible(message, dispatch)}
                       />
                     </div>
                   );

@@ -2,25 +2,26 @@ import * as io from 'socket.io-client';
 import clientSocket from './clientSocket';
 import { includes } from 'lodash';
 
-const outgoingChatActions = [
+const actionsForwarededToChatServer = [
   'OUTGOING_MESSAGE',
   'SET_DISPLAY_NAME',
+  'UPDATE_MESSAGE',
 ];
 
-const outgoingClientActions = [
+const actionsForwaredToClientServer = [
   'CREATE_NEW_SERVER',
 ];
 
 let chatSocket;
 
 const socketMiddleware = store => next => ({ type, payload }) => {
-  if (includes(outgoingClientActions, type)) {
+  if (includes(actionsForwaredToClientServer, type)) {
     clientSocket.emit('action', { type, payload });
-  } else if (includes(outgoingChatActions, type)) {
+  } else if (includes(actionsForwarededToChatServer, type)) {
     chatSocket.emit('action', { type, payload });
   } else if (type === 'INCOMING_MESSAGE') {
     chatSocket.emit('action', {
-      type: 'MESSAGE_STATUS_CHANGED',
+      type: 'UPDATE_MESSAGE',
       payload: {
         id: payload.id,
         from: payload.from,

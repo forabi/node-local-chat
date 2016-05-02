@@ -21,13 +21,6 @@ const reducer = (previousState = initalState, { type, payload } = { }) => {
         { ...previousState[index], ...payload },
         ...slice(previousState, index + 1),
       ];
-    case 'SET_ACTIVE_CONVERSATION':
-      return map(previousState, message => {
-        if (message.from === payload) {
-          return { ...message, status: 'read' };
-        }
-        return message;
-      });
     case 'CLIENT_OFFLINE':
       return [...previousState, {
         from: payload,
