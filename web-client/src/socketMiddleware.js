@@ -2,7 +2,7 @@ import * as io from 'socket.io-client';
 import clientSocket from './clientSocket';
 import { includes } from 'lodash';
 
-const outgoingActions = [
+const outgoingChatActions = [
   'OUTGOING_MESSAGE',
   'SET_DISPLAY_NAME',
 ];
@@ -16,7 +16,7 @@ let chatSocket;
 const socketMiddleware = store => next => ({ type, payload }) => {
   if (includes(outgoingClientActions, type)) {
     clientSocket.emit('action', { type, payload });
-  } else if (includes(outgoingActions, type)) {
+  } else if (includes(outgoingChatActions, type)) {
     chatSocket.emit('action', { type, payload });
   } else if (type === 'INCOMING_MESSAGE') {
     chatSocket.emit('action', {

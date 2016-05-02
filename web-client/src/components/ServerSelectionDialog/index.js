@@ -3,6 +3,7 @@ import Dialog from 'material-ui/Dialog';
 import List from 'material-ui/List/List';
 import ListItem from 'material-ui/List/ListItem';
 import RaisedButton from 'material-ui/RaisedButton';
+import LinearProgress from 'material-ui/LinearProgress';
 import { connect } from 'react-redux';
 import { connectToServer, requestNewServer } from '../../actions';
 import Placeholder from '../Placeholder';
@@ -14,7 +15,6 @@ const serverShape = PropTypes.shape({
   port: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   fqdn: PropTypes.string.isRequired,
-  numClients: PropTypes.number.isRequired,
   txt: PropTypes.shape({
     address: PropTypes.string.isRequired,
     port: PropTypes.string.isRequired,
@@ -25,13 +25,12 @@ const serverShape = PropTypes.shape({
 const ServerSelectionDialog = ({ servers, open, dispatch }) => (
   <Dialog
     className={styles.root}
-    title="Select chat server"
     modal open={open}
   >
     <div className={styles.content}>
       {servers.length === 0 ?
         <Placeholder
-          title="No local chat servers online"
+          title="No local chat servers are online"
           icon={ComputerIcon}
           actions={
             <RaisedButton
@@ -40,7 +39,13 @@ const ServerSelectionDialog = ({ servers, open, dispatch }) => (
             />
           }
         >
-          You can create a server on this computer and chat with others on the local network
+          <span>
+            <LinearProgress mode="indeterminate" />
+            <br />
+            <p>We'll keep looking...</p>
+            <p>Alternatively, you can create a server on this computer and
+            chat with others on the local network.</p>
+          </span>
         </Placeholder> :
         <List
           className={styles.list}
