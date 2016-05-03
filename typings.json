@@ -11,6 +11,7 @@
     "react": "registry:dt/react#0.14.0+20160423065914",
     "react-dom": "registry:dt/react-dom#0.14.0+20160412154040",
     "react-redux": "registry:dt/react-redux#4.4.0+20160406115600",
+    "sequelize": "registry:dt/sequelize#3.4.1+20160423143634",
     "socket.io": "registry:dt/socket.io#1.4.4+20160317120654"
   }
 }

@@ -90,15 +90,6 @@ class ChatServer {
         // @TODO
         break;
       case 'OUTGOING_MESSAGE':
-        socket.broadcast.to(action.payload.to)
-          .emit('action', {
-            type: 'INCOMING_MESSAGE',
-            payload: assign({ }, action.payload, {
-              from: socket.id,
-              status: 'delivered',
-              dateReceived: new Date,
-            }),
-          });
         socket.emit('action', {
           type: 'UPDATE_MESSAGE',
           payload: {
@@ -106,6 +97,16 @@ class ChatServer {
             status: 'sent',
             dateSent: new Date,
           },
+        });
+
+        socket.broadcast.to(action.payload.to)
+        .emit('action', {
+          type: 'INCOMING_MESSAGE',
+          payload: assign({ }, action.payload, {
+            from: socket.id,
+            status: 'delivered',
+            dateReceived: new Date,
+          }),
         });
         break;
       case 'UPDATE_MESSAGE':
