@@ -7,9 +7,15 @@
   justify-content: space-between;
   margin: 0 5px;
   font-size: 12px;
+  flex-shrink: 0;
+  margin-left: auto;
 }
 
 .metadata_container > * {
+  margin: 0 2px;
+}
+
+.message .text {
   margin: 0 2px;
 }
 
@@ -18,7 +24,7 @@
   -webkit-filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.2));
   border-radius: 5px;
   padding: 5px;
-  margin: 0 12px;
+  margin: 5px 12px;
 }
 
 .message__event {
@@ -32,6 +38,7 @@
 
 .bubble {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   position: relative;
   max-width: 400px;

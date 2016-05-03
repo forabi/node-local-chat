@@ -1,4 +1,5 @@
-import { map, filter, slice, findIndex } from 'lodash';
+import { filter, slice, findIndex } from 'lodash';
+import autodir from './autodir';
 const initalState = [];
 
 const reducer = (previousState = initalState, { type, payload } = { }) => {
@@ -7,12 +8,19 @@ const reducer = (previousState = initalState, { type, payload } = { }) => {
     case 'INCOMING_MESSAGE':
       return [
         ...previousState,
-        { ...payload, status: 'pending', incoming: true },
+        { ...payload,
+          incoming: true,
+          textDirection: autodir(payload.text),
+        },
       ];
     case 'OUTGOING_MESSAGE':
       return [
         ...previousState,
-        { ...payload, status: 'pending', outgoing: true },
+        { ...payload,
+          status: 'pending',
+          outgoing: true,
+          textDirection: autodir(payload.text),
+        },
       ];
     case 'UPDATE_MESSAGE':
       index = findIndex(previousState, { id: payload.id });

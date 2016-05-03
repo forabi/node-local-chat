@@ -30,7 +30,7 @@ class Message extends PureComponent {
     text: PropTypes.string.isRequired,
     dateSent: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]).isRequired,
     direction: PropTypes.oneOf(['right', 'left', 'none']).isRequired,
-    status: PropTypes.oneOf(['pending', 'sent', 'delivered', 'unread']).isRequired,
+    status: PropTypes.oneOf(['pending', 'sent', 'delivered', 'read']).isRequired,
     style: PropTypes.object,
     onVisible: PropTypes.func,
   };
@@ -39,14 +39,13 @@ class Message extends PureComponent {
     if (this.props.onVisible && window.IntersectionObserver) {
       this.observer = new window.IntersectionObserver(changes => {
         changes.forEach(change => {
-          console.log('IntersectionObserver called');
           this.props.onVisible();
           this.observer.unobserve(change.target);
         });
       }, {
         threshold: [1],
       });
-      this.observer.observe(findDOMNode(this));
+      this.observer.observe(findDOMNode(this.refs.readIndicator));
     }
   }
 
@@ -55,7 +54,11 @@ class Message extends PureComponent {
   }
 
   render() {
-    const { outgoing, text, status, dateSent, direction, style: inlineStyle } = this.props;
+    const {
+      outgoing, text, textDirection,
+      status, dateSent, direction, style: inlineStyle,
+    } = this.props;
+
     let className;
     if (direction === 'right') {
       className = style.bubble__right;
@@ -69,13 +72,14 @@ class Message extends PureComponent {
         style={inlineStyle}
         className={className}
       >
-        {text}
+        <span className={style.text} style={{ direction: textDirection }}>{text}</span>
         <span className={style.metadata_container}>
           <span className={style.date}>{
             moment(dateSent).format('LT')
           }</span>
           {outgoing ? getIcon(status) : null}
         </span>
+        <span ref="readIndicator"></span>
       </div>
     );
   }
