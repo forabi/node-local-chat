@@ -8,6 +8,7 @@ import displayName from './displayName';
 import serverAddress from './serverAddress';
 import servers from './servers';
 import socketMiddleware from './socketMiddleware';
+import storageMiddleware from './storageMiddleware';
 
 const reducers = combineReducers({
   displayName,
@@ -22,7 +23,8 @@ const reducers = combineReducers({
 const store = createStore(reducers,
   compose(
     applyMiddleware(
-      socketMiddleware
+      socketMiddleware,
+      storageMiddleware
     ),
     (process.env.NODE_ENV !== 'production' && window.devToolsExtension) ?
       window.devToolsExtension() : f => f

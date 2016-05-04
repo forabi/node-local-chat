@@ -8,6 +8,7 @@
     "webpack": "registry:npm/webpack#1.12.9+20160418172948"
   },
   "ambientDependencies": {
+    "localforage": "registry:dt/localforage#0.0.0+20160316155526",
     "react": "registry:dt/react#0.14.0+20160423065914",
     "react-dom": "registry:dt/react-dom#0.14.0+20160412154040",
     "react-redux": "registry:dt/react-redux#4.4.0+20160406115600",

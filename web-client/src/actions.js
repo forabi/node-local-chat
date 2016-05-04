@@ -7,7 +7,7 @@ export const setActiveConversation = payload => ({
 
 export const sendMessageTo = (to, message) => ({
   type: 'OUTGOING_MESSAGE',
-  payload: { to, ...message, id: uuid.v4(), dateSent: new Date },
+  payload: { to, ...message, id: uuid.v4(), dateSent: (new Date).toJSON() },
 });
 
 export const markMessageAsRead = ({ id, from }) => ({
