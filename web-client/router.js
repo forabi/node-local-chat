@@ -7,6 +7,8 @@ const env = require('../env');
 
 const router = new express.Router;
 
+router.use('/', express.static(`${__dirname}/public`));
+
 if (env.isDevelopment) {
   const compiler = webpack(webpackConfig);
 
@@ -22,6 +24,5 @@ if (env.isDevelopment) {
   }));
 }
 
-router.use('/', express.static(`${__dirname}/public`));
 
 module.exports = router;

@@ -1,8 +1,9 @@
-const Sequelize = require('sequelize');
-const { UUID, DATE, ENUM, STRING, BLOB } = require('sequelize/lib/data-types');
+import Sequelize from 'sequelize';
+import { UUID, DATE, ENUM, STRING, BLOB } from 'sequelize/lib/data-types';
 
 const db = new Sequelize('localchat', null, null, {
   dialect: 'sqlite',
+  log: () => null,
 });
 
 const User = db.define('user', {
@@ -11,31 +12,26 @@ const User = db.define('user', {
   picture: BLOB,
 });
 
+const Token = db.define('token');
+User.hasMany(Token);
+
 const Group = db.define('group', {
   name: STRING(50),
-  createdBy: UUID.v4,
+  createdBy: UUID,
   picture: BLOB,
 });
 
-Group.hasMany(User, { foreignKey: 'createdBy' });
+Group.hasMany(User);
+Group.belongsTo(User, { foreignKey: 'createdBy' });
 
-const Destination = db.define('destination', {
+const UndeliveredMessage = db.define('undeliveredMessage', {
   id: {
-    type: UUID.v4,
-    primaryKey: true,
-  },
-  type: ENUM('group', 'user'),
-});
-
-const Message = db.define('message', {
-  id: {
-    type: UUID.v4,
+    type: UUID,
     primaryKey: true,
   },
   status: ENUM('sent', 'delivered', 'read'),
-  from: UUID.v4,
-  to: UUID.v4,
-  toGroup: UUID.v4,
+  from: UUID,
+  to: UUID,
   type: ENUM('text', 'image', 'video', 'audio', 'document', 'link'),
   text: STRING,
   blob: BLOB,
@@ -44,8 +40,8 @@ const Message = db.define('message', {
   dateRead: DATE,
 });
 
-Message.belongsTo(User, { foreignKey: 'from' });
-Message.belongsTo(Destination, { foreignKey: 'to' });
+UndeliveredMessage.belongsTo(User, { foreignKey: 'from' });
+UndeliveredMessage.belongsTo(User, { foreignKey: 'to' });
 
-module.export = db;
-
+export { UndeliveredMessage, User, Group, Token };
+export default db;

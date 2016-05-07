@@ -1,0 +1,34 @@
+import { mapValues } from 'lodash';
+
+let actions = {
+  INCOMING_MESSAGE: 0,
+  OUTGOING_MESSAGE: 1,
+  UPDATE_MESSAGE: 2,
+  USER_OFFLINE: 3,
+  USER_ONLINE: 4,
+  FETCH_MESSAGES: 5,
+  SET_DISPLAY_NAME: 6,
+  SET_SERVER_ADDRESS: 7,
+  CREATE_NEW_SERVER: 8,
+  SET_ACTIVE_CONVERSATION: 9,
+  CREATE_USER: 10,
+  SET_USER_ID: 11,
+  SET_USERS: 12,
+  UPDATE_USER: 13,
+  ADD_USER: 14,
+  RECORD_USER_VISIT: 15,
+  SET_SERVERS: 16,
+  SOCKET_CONNECTED: 17,
+  SOCKET_DISCONNECTED: 18,
+  SOCKET_RECONNECTED: 19,
+  OUTGOING_MESSAGE_UPDATE: 20,
+  INCOMING_MESSAGE_UPDATE: 21,
+  SET_TOKEN: 22,
+  UPDATE_USER_PROFILE: 23,
+};
+
+// @TODO: implement Proxy to check for undefined actions?
+
+actions = mapValues(actions, (value, key) => key);
+
+export default actions;

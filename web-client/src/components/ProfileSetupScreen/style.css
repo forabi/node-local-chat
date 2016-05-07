@@ -1,0 +1,51 @@
+.root {
+  display: grid;
+  grid-template-areas: "header" "image" "name";
+  grid-template-rows: repeat(3, auto);
+  grid-template-columns: 1fr;
+  justify-items: center;
+}
+
+.header {
+  grid-area: header;
+}
+
+.name {
+  grid-area: name;
+}
+
+.dropzone {
+  max-width: 100%;
+  align-self: center;
+  grid-area: "image";
+}
+
+.preview,
+.preview_text {
+  box-sizing: border-box;
+  width: 128px;
+  height: 128px;
+  max-height: 128px;
+  max-width: 128px;
+}
+
+.preview {
+  clip-path: circle(60px at center);
+  -webkit-clip-path: circle(60px at center);
+}
+
+.preview_text {
+  position: absolute;
+  padding: 25px;
+  border-radius: 50%;
+  font-size: small;
+  text-align: center;
+  border: 2px dashed lightgray;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.input_name,
+.button_next {
+  margin: 0 5px;
+}

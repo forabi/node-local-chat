@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import PureComponent from 'react-pure-render/component';
 import { connect } from 'react-redux';
-import { sendMessageTo, markMessageAsRead } from '../../actions';
+import { sendMessage, markMessageAsRead } from '../../actionCreators';
 import Toolbar from 'material-ui/Toolbar/Toolbar';
 import ToolbarGroup from 'material-ui/Toolbar/ToolbarGroup';
 import OnlineIcon from '../OnlineIcon';
@@ -40,9 +40,7 @@ export class ChatView extends PureComponent {
   }
 
   onMessageVisible(message, dispatch) {
-    console.log('Checking...', message);
     if (message.incoming && message.status !== 'read') {
-      console.log('Marking message as read...');
       dispatch(markMessageAsRead(message));
     }
   }
@@ -100,7 +98,7 @@ export class ChatView extends PureComponent {
                   className={style.compose_form}
                   onSubmit={e => {
                     e.preventDefault();
-                    dispatch(sendMessageTo(conversationId, this.state.message));
+                    dispatch(sendMessage({ to: conversationId, ...this.state.message }));
                     this.setState({ message: '' });
                   }}
                 >

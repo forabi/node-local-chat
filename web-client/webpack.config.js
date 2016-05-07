@@ -8,6 +8,8 @@ const extractCSS = new ExtractTextPlugin('styles.css');
 
 const cssLoaders = ['style', 'css?module=1&localIdentName=[name]_[local]_[hash:base64:5]'];
 
+const buildPath = '/public/';
+
 const config = {
   debug: true,
 
@@ -22,6 +24,7 @@ const config = {
   output: {
     path: path.resolve(__dirname, 'public'),
     filename: '[name].js',
+    publicPath: buildPath,
   },
 
   module: {
@@ -66,6 +69,7 @@ if (env.isDevelopment) {
   config.devtool = 'eval';
   config.devServer = {
     inline: true,
+    contentBase: buildPath,
   };
   if (env.isHot) {
     config.devServer.hot = true;
