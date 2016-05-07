@@ -6,6 +6,7 @@ const config = {
     'transform-class-properties',
     'transform-function-bind',
     'transform-runtime',
+    'syntax-trailing-function-commas',
   ],
   sourceMaps: 'both',
 };
