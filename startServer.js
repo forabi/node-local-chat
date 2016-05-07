@@ -1,6 +1,7 @@
-const log = require('debug')('local-chat-server');
-const Server = require('./server/Server');
+import debug from 'debug';
+import Server from './server/Server';
 
+const log = debug('local-chat-server');
 // @TODO get device name and os info
 const server = new Server('f-laptop-localchat');
 
