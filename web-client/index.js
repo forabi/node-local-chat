@@ -6,6 +6,7 @@ const getPort = require('get-port');
 const clientRouter = require('./router');
 const log = require('debug')('local-chat-web-client');
 const filter = require('lodash/filter');
+const assign = require('lodash/assign');
 const Server = require('../server/Server');
 
 const app = express();
@@ -34,7 +35,10 @@ httpServer.listen(3000, 'localhost', () => {
       console.log('servers', filter(bonjourBrowser.services, match));
       socket.emit('action', {
         type: 'SET_SERVERS',
-        payload: filter(bonjourBrowser.services, match),
+        payload: filter(bonjourBrowser.services, match).map(server => (
+          server.referer ? assign({ }, server, { hostname: server.referer.address || 'localhost' }) :
+            assign({ }, server, { hostname: server.addresses[0] || 'localhost' })
+        )),
       });
     };
 

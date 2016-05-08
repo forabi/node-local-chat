@@ -56,7 +56,7 @@ const ServerSelectionDialog = ({ servers, open, dispatch }) => (
               primaryText={server.name}
               secondaryText={server.txt.address}
               onClick={() => (
-                dispatch(connectToServer(`${server.addresses[0] || 'localhost'}:${server.txt.port}`))
+                dispatch(connectToServer(`http://${server.hostname}:${server.txt.port}`))
               )}
             />
           )

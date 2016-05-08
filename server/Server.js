@@ -123,12 +123,15 @@ class ChatServer {
     }
   }
 
-  start(port, address = 'localhost') {
+  start(port) {
     const app = express();
-
-    app.use(cors({
-      allowedOrigins: ['*'],
-    }));
+    app.use('*', (req, res, next) => {
+      res.header('Access-Control-Allow-Origin', '*');
+      res.header('Access-Control-Allow-Headers', 'X-Requested-With');
+      res.header('Access-Control-Allow-Headers', 'Content-Type');
+      res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+      next();
+    });
 
     this.httpServer = http.createServer(app);
     this.io = socketIO(this.httpServer);
@@ -137,18 +140,18 @@ class ChatServer {
 
     return getPort().then(bonjourPort => (
       new Promise((resolve, reject) => {
-        log(`Chat server is up on http://${address}:${port}/`);
+        log(`Chat server is up on port ${port}`);
 
         this.httpServer.on('error', err => reject(err));
 
-        this.httpServer.listen(port, address, () => {
+        this.httpServer.listen(port, () => {
           const options = {
             type: 'http',
             port: bonjourPort,
             name: this.name,
             txt: {
+              port,
               localchat: pkg.version,
-              address, port,
             },
           };
 
