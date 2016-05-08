@@ -27,7 +27,7 @@ httpServer.listen(3000, 'localhost', () => {
     return doesMatch;
   };
 
-  const bonjourBrowser = bonjour.find(match);
+  const bonjourBrowser = bonjour.find({ type: 'http' });
 
   io.on('connection', socket => {
     const updateServers = () => {

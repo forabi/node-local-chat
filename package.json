@@ -7,8 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint server web-client",
     "lint-fix": "eslint server web-client --fix",
-    "server": "DEBUG=local-chat* node ./startServer.js",
-    "client": "HOT=1 NODE_ENV=development DEBUG=local-chat* node ./web-client/index.js"
+    "server": "cross-env DEBUG=local-chat* node ./startServer.js",
+    "client": "cross-env HOT=1 NODE_ENV=development DEBUG=local-chat* node ./web-client/index.js"
   },
   "keywords": [],
   "author": "Muhammad Fawwaz Orabi <mfawwaz93@gmail.com> (http://forabi.github.io)",
@@ -33,7 +33,6 @@
     "reselect": "^2.5.1",
     "sequelize": "^3.22.0",
     "socket.io": "^1.4.5",
-    "sqlite": "0.0.4",
     "username": "^2.1.0",
     "winston": "^2.2.0"
   },
@@ -54,6 +53,7 @@
     "babel-preset-react-optimize": "^1.0.1",
     "babel-preset-stage-3": "^6.5.0",
     "babel-register": "^6.7.2",
+    "cross-env": "^1.0.7",
     "css-loader": "^0.23.1",
     "eslint": "^2.8.0",
     "eslint-config-airbnb": "^8.0.0",
