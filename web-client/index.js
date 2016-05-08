@@ -31,6 +31,7 @@ httpServer.listen(3000, 'localhost', () => {
 
   io.on('connection', socket => {
     const updateServers = () => {
+      console.log('servers', filter(bonjourBrowser.services, match));
       socket.emit('action', {
         type: 'SET_SERVERS',
         payload: filter(bonjourBrowser.services, match),
