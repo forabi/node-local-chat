@@ -16,7 +16,7 @@ app.use('/', clientRouter);
 const httpServer = http.createServer(app);
 const io = socketIO(httpServer);
 
-httpServer.listen(3000, 'localhost', () => {
+httpServer.listen(3000, () => {
   const { address, port } = httpServer.address();
   log(`Web client is up at ${address}:${port}`);
   const match = server => {
