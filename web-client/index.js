@@ -21,7 +21,7 @@ app.use('/', clientRouter);
 const httpServer = http.createServer(app);
 const io = socketIO(httpServer);
 
-httpServer.listen(3000, 'localhost', () => {
+httpServer.listen(3000, () => {
   const { address, port } = httpServer.address();
   log(`Web client is up at ${address}:${port}`);
   const match = server => {
@@ -33,13 +33,17 @@ httpServer.listen(3000, 'localhost', () => {
     return doesMatch;
   };
 
-  const bonjourBrowser = bonjour.find(match);
+  const bonjourBrowser = bonjour.find({ type: 'http' });
 
   io.on('connection', socket => {
     const updateServers = () => {
+      console.log('servers', filter(bonjourBrowser.services, match));
       socket.emit('action', {
         type: 'SET_SERVERS',
-        payload: filter(bonjourBrowser.services, match),
+        payload: filter(bonjourBrowser.services, match).map(server => (
+          server.referer ? assign({ }, server, { hostname: server.referer.address || 'localhost' }) :
+            assign({ }, server, { hostname: server.addresses[0] || 'localhost' })
+        )),
       });
     };
 
@@ -51,15 +55,12 @@ httpServer.listen(3000, 'localhost', () => {
       switch (action.type) {
         case 'CREATE_NEW_SERVER':
           try {
-            console.log('trying...', action);
             await new Server(action.payload.name).start({
               port: await getPort(),
-              hostname: 'localhost',
             });
-            console.log('server created');
             updateServers();
           } catch (e) {
-            console.error('err', e);
+            log('Error starting server:', e);
           }
           break;
         default:

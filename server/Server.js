@@ -7,7 +7,7 @@ import cors from 'express-cors';
 import Bonjour from 'bonjour';
 import _ from 'lodash';
 import getPort from 'get-port';
-import { User, Token } from './db';
+// import { User, Token } from './db';
 import pkg from '../package.json';
 import debug from 'debug';
 
@@ -127,16 +127,19 @@ export default class ChatServer {
     });
   }
 
-  async start({ hostname = 'localhost', port }) {
+  async start({ port }) {
     if (!port) {
       port = await getPort();
     }
 
     const app = express();
-
-    app.use(cors({
-      allowedOrigins: ['*'],
-    }));
+    app.use('*', (req, res, next) => {
+      res.header('Access-Control-Allow-Origin', '*');
+      res.header('Access-Control-Allow-Headers', 'X-Requested-With');
+      res.header('Access-Control-Allow-Headers', 'Content-Type');
+      res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+      next();
+    });
 
     this.httpServer = http.createServer(app);
     this.io = socketIO(this.httpServer);
@@ -144,17 +147,17 @@ export default class ChatServer {
     this.io.on('connection', this.onSocketConnected.bind(this));
 
     await Promise.fromCallback(
-      cb => this.httpServer.listen(port, hostname, cb)
+      cb => this.httpServer.listen(port, cb)
     );
 
-    log(`HTTP server listening on ${hostname}:${port}`);
+    log(`HTTP server listening on ${port}`);
 
     this.bonjourService = bonjour.publish({
       type: 'http',
       name: this.name,
       port: await getPort(),
       txt: {
-        hostname, port,
+        port,
         localchat: pkg.version,
       },
     });
