@@ -7,11 +7,12 @@ db.version(1).stores({
   messages: '&id, type, text, content, from, to, conversationId, dateSent, dateReceived',
   tokens: '&serverId, token',
   analytics: '&type, value',
+  userdata: '&id, value',
 });
 
-const { users, messages, userdata, analytics } = db;
+const { users, messages, userdata, tokens, analytics } = db;
 
-export { users, messages, userdata, analytics };
+export { users, messages, userdata, tokens, analytics };
 export default db;
 
 db.open();

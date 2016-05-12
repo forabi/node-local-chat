@@ -1,4 +1,5 @@
-import { users, tokens, messages, analytics } from '../utils/storage';
+import { userdata, tokens, messages, analytics } from '../utils/storage';
+import { toArray, mapValues } from 'lodash';
 import actions from '../../../actions';
 
 const storageMiddleware = store => next => async ({ type, payload }) => {
@@ -11,6 +12,12 @@ const storageMiddleware = store => next => async ({ type, payload }) => {
     await messages.put(payload);
   } else if (type === actions.INCOMING_MESSAGE_UPDATE || type === actions.OUTGOING_MESSAGE_UPDATE) {
     await messages.update(payload.id, payload);
+  } else if (type === actions.UPDATE_USER_PROFILE) {
+    await userdata.bulkPut(
+      toArray(
+        mapValues(payload, (value, key) => ({ id: key, value }))
+      )
+    );
   }
   return next({ type, payload });
 };

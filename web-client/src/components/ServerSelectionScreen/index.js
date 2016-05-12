@@ -63,7 +63,7 @@ const ServerSelectionScreen = ({ servers, dispatch }) => (
 );
 
 ServerSelectionScreen.propTypes = {
-  servers: PropTypes.array,
+  servers: PropTypes.objectOf(serverShape),
   dispatch: PropTypes.func.isRequired,
 };
 

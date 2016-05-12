@@ -7,6 +7,8 @@ import styles from './style.css';
 import { setUserData } from '../../actionCreators';
 import Dropzone from 'react-dropzone';
 import placeholderURL from '!!file!./default-avatar.svg';
+import toBuffer from 'blob-to-buffer';
+import { fromCallback } from 'bluebird';
 
 class ProfileSetupScreen extends PureComponent {
   static propTypes = {
@@ -18,20 +20,27 @@ class ProfileSetupScreen extends PureComponent {
     super();
     this.state = {
       name: '',
-      pic: null,
+      picture: null,
     };
   }
 
-  onImageDrop(files) {
+  async onImageDrop(files) {
     this.setState(state => ({
       ...state,
-      pic: files[0],
+      picture: files[0],
     }));
     // @TODO: handle image upload
   }
 
+  async updateProfile() {
+    const data = { ...this.state };
+    if (data.picture) {
+      data.picture = await fromCallback(cb => toBuffer(data.picture, cb));
+    }
+    this.props.dispatch(setUserData(data));
+  }
+
   render() {
-    const { dispatch } = this.props;
     return (
       <div className={styles.root}>
         <div className={styles.header}>
@@ -44,13 +53,13 @@ class ProfileSetupScreen extends PureComponent {
         >
           <div
             className={styles.preview_text}
-            style={this.state.pic ? { visibility: 'hidden' } : null}
+            style={this.state.picture ? { visibility: 'hidden' } : null}
           >
             Drop a profile picture here or click to choose one
           </div>
           <img
             className={styles.preview}
-            src={this.state.pic ? this.state.pic.preview : placeholderURL}
+            src={this.state.picture ? this.state.picture.preview : placeholderURL}
             alt="Preview"
           />
         </Dropzone>
@@ -66,7 +75,7 @@ class ProfileSetupScreen extends PureComponent {
           <RaisedButton
             className={styles.button_next}
             primary label="Next"
-            onClick={() => dispatch(setUserData(this.state))}
+            onClick={::this.updateProfile}
           />
         </form>
       </div>

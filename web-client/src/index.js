@@ -16,7 +16,7 @@ function renderApp() {
   ), mountElement);
 }
 
-if (module && module.hot) {
+if (module.hot) {
   module.hot.accept('./ReduxApp', renderApp);
 }
 
