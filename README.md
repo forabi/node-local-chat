@@ -1,7 +1,7 @@
 React Local IM Client
 ===========================
 
-[Video Demo](https://www.youtube.com/watch?v=mlnoJBajVns)
+[Video Demo](https://www.youtube.com/watch?v=JjBCDw_tt24)
 
 Instant Messaging server and client implementation built using:
 
