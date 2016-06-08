@@ -1,6 +1,8 @@
 React Local IM Client
 ===========================
 
+[Video Demo](https://www.youtube.com/watch?v=mlnoJBajVns)
+
 Instant Messaging server and client implementation built using:
 
 * node.js
@@ -9,4 +11,5 @@ Instant Messaging server and client implementation built using:
 * Redux
 * material-ui
 * CSS Modules
+
 
